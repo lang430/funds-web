@@ -6,7 +6,7 @@ const TOKEN_EXPIRY = "7d";
 
 function getSecret(): Uint8Array {
   const { env } = getCloudflareContext();
-  const secret = (env as unknown as Record<string, string>).JWT_SECRET || "dev-secret-change-in-production";
+  const secret = (env as Record<string, string>).JWT_SECRET || "dev-secret-change-in-production";
   return new TextEncoder().encode(secret);
 }
 

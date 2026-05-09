@@ -2,7 +2,7 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 function getKV(): KVNamespace {
   const { env } = getCloudflareContext();
-  return env.KV as unknown as KVNamespace;
+  return (env as Record<string, unknown>).KV as KVNamespace;
 }
 
 const DEFAULT_TTL = 60;

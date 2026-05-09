@@ -2,7 +2,8 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 export function getDB(): D1Database {
   const { env } = getCloudflareContext();
-  return env.DB as unknown as D1Database;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (env as any).DB;
 }
 
 export async function runMigrations(): Promise<void> {
