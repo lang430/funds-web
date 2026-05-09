@@ -1,6 +1,8 @@
+# wrangler.toml - Cloudflare Pages project config
+# 仅用于定义 D1/KV 绑定，Pages 构建使用 @cloudflare/next-on-pages
+
 compatibility_date = "2025-05-01"
 compatibility_flags = ["nodejs_compat"]
-pages_build_output_dir = ".vercel/output/static"
 
 [[d1_databases]]
 binding = "DB"
