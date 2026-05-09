@@ -1,6 +1,7 @@
+name = "funds-web"
 compatibility_date = "2025-05-01"
 compatibility_flags = ["nodejs_compat"]
-pages_build_output_dir = ".open-next"
+main = ".open-next/worker.js"
 
 [[d1_databases]]
 binding = "DB"
