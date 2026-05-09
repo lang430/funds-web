@@ -1,0 +1,21 @@
+name = "funds-web"
+compatibility_date = "2025-05-01"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".vercel/output/static"
+
+[observability]
+enabled = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "funds-db"
+database_id = "03c4d5de-597a-4e8b-a9a3-d4997594097f"
+
+[[kv_namespaces]]
+binding = "KV"
+id = "c1c2704b96104d70abc787c66281dfa5"
+
+[vars]
+GITHUB_CLIENT_ID = ""
+GITHUB_CLIENT_SECRET = ""
+JWT_SECRET = ""
