@@ -1,6 +1,8 @@
 import { exchangeGitHubCode, createToken } from "@/lib/auth";
 import { upsertUser } from "@/lib/db";
 
+export const runtime = "edge";
+
 export async function GET(request: Request): Promise<Response> {
   try {
     const url = new URL(request.url);

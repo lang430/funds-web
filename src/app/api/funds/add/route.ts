@@ -1,6 +1,8 @@
 import { getUserIdFromRequest } from "@/lib/auth";
 import { addFund } from "@/lib/db";
 
+export const runtime = "edge";
+
 export async function POST(request: Request): Promise<Response> {
   try {
     const userId = await getUserIdFromRequest(request);
