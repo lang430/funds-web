@@ -52,12 +52,9 @@ export default function HomePage() {
     try {
       const res = await fetch(`/api/funds?deviceId=${encodeURIComponent(deviceId)}`);
       if (!res.ok) return;
-      const data: FundResponse = await res.json();
-      if (Array.isArray(data.valuations)) {
-        setValuations(data.valuations);
-      }
-      if (Array.isArray(data.fundList)) {
-        setFundList(data.fundList);
+      const json = await res.json() as { success: boolean; data: FundValuation[] };
+      if (json.success && Array.isArray(json.data)) {
+        setValuations(json.data);
       }
     } catch {
       // 基金数据获取失败，跳过

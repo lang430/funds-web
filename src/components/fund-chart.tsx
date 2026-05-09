@@ -33,6 +33,7 @@ interface Props {
 }
 
 function parseKlines(klines: string[]): ChartPoint[] {
+  if (!klines || !Array.isArray(klines)) return [];
   return klines
     .filter((line) => line && line.includes(","))
     .map((line) => {

@@ -33,6 +33,14 @@ function sylColor(val: string): string {
 }
 
 export function FundInfoCard({ data, darkMode: _darkMode }: Props) {
+  if (!data?.FCODE) {
+    return (
+      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 p-6 text-center text-xs text-zinc-400">
+        暂无基金信息
+      </div>
+    );
+  }
+
   const nav = parseFloat(data.DWJZ);
   const accNav = parseFloat(data.LJJZ);
   const scale = parseFloat(data.ENDNAV);

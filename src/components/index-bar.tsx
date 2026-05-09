@@ -68,13 +68,13 @@ export function IndexBar({ isEdit }: Props) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const availableIndices = DEFAULT_INDICES.filter(
+  const availableIndices = (DEFAULT_INDICES || []).filter(
     (idx) => !selectedCodes.includes(idx.value)
   );
 
   return (
     <div className="flex flex-wrap gap-2 mb-3">
-      {indexData.map((item, i) => {
+      {indexData && indexData.length > 0 && indexData.map((item, i) => {
         const code = selectedCodes[i];
         if (!code) return null;
         const label =

@@ -49,7 +49,7 @@ export function FundTable({ isEdit, onRefresh }: Props) {
   const sharesTimers = useRef<Record<string, NodeJS.Timeout>>({});
   const costTimers = useRef<Record<string, NodeJS.Timeout>>({});
 
-  const sorted = getSortedValuations();
+  const sorted = (getSortedValuations ? getSortedValuations() : valuations) || [];
 
   useEffect(() => {
     return () => {
@@ -193,7 +193,7 @@ export function FundTable({ isEdit, onRefresh }: Props) {
         </thead>
         <tbody>
           {sorted.map((item) => {
-            const fundItem = fundList.find((f) => f.code === item.fundcode);
+            const fundItem = (fundList || []).find((f) => f.code === item.fundcode);
             const code = item.fundcode;
             const gszzlColor = gainColor(item.gszzl);
             const gainsColor = gainColor(item.gains);
