@@ -1,8 +1,8 @@
-import { getRequestContext } from "@cloudflare/next-on-pages";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 export function getDB(): D1Database {
-  const ctx = getRequestContext();
-  return (ctx.env as unknown as Record<string, D1Database>).DB;
+  const { env } = getCloudflareContext();
+  return env.DB as unknown as D1Database;
 }
 
 export async function runMigrations(): Promise<void> {

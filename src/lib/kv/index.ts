@@ -1,7 +1,8 @@
-import { getRequestContext } from "@cloudflare/next-on-pages";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 function getKV(): KVNamespace {
-  return (getRequestContext().env as unknown as Record<string, KVNamespace>).KV;
+  const { env } = getCloudflareContext();
+  return env.KV as unknown as KVNamespace;
 }
 
 const DEFAULT_TTL = 60;

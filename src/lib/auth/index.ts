@@ -1,13 +1,12 @@
 import { SignJWT, jwtVerify } from "jose";
-import { getRequestContext } from "@cloudflare/next-on-pages";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 const JWT_ALG = "HS256";
 const TOKEN_EXPIRY = "7d";
 
 function getSecret(): Uint8Array {
-  const ctx = getRequestContext();
-  const env = ctx.env as unknown as Record<string, string>;
-  const secret = env.JWT_SECRET || "dev-secret-change-in-production";
+  const { env } = getCloudflareContext();
+  const secret = (env as unknown as Record<string, string>).JWT_SECRET || "dev-secret-change-in-production";
   return new TextEncoder().encode(secret);
 }
 
@@ -39,9 +38,8 @@ export async function getUserIdFromRequest(request: Request): Promise<number | n
 }
 
 export function getEnv(key: string): string {
-  const ctx = getRequestContext();
-  const env = ctx.env as unknown as Record<string, string>;
-  return env[key] || "";
+  const { env } = getCloudflareContext();
+  return ((env as unknown as Record<string, string>)[key]) || "";
 }
 
 export async function exchangeGitHubCode(code: string): Promise<{
