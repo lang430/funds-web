@@ -38,8 +38,17 @@ export async function getUserIdFromRequest(request: Request): Promise<number | n
 }
 
 export function getEnv(key: string): string {
-  const { env } = getCloudflareContext();
-  return ((env as unknown as Record<string, string>)[key]) || "";
+  try {
+    const { env } = getCloudflareContext();
+    const value = ((env as unknown as Record<string, string>)[key]) || "";
+    if (!value) {
+      console.warn(`[auth] getEnv("${key}") 返回空值，请确认 wrangler secret 已配置`);
+    }
+    return value;
+  } catch (e) {
+    console.error(`[auth] getEnv("${key}") 读取失败:`, e);
+    return "";
+  }
 }
 
 export async function exchangeGitHubCode(code: string): Promise<{
@@ -51,9 +60,13 @@ export async function exchangeGitHubCode(code: string): Promise<{
   const clientId = getEnv("GITHUB_CLIENT_ID");
   const clientSecret = getEnv("GITHUB_CLIENT_SECRET");
 
-  if (!clientId || !clientSecret) return null;
+  if (!clientId || !clientSecret) {
+    console.error("[auth] exchangeGitHubCode 失败: GITHUB_CLIENT_ID 或 GITHUB_CLIENT_SECRET 未配置");
+    return null;
+  }
 
   try {
+    console.log("[auth] 正在用 code 换取 access_token...");
     const tokenRes = await fetch("https://github.com/login/oauth/access_token", {
       method: "POST",
       headers: {
@@ -64,8 +77,12 @@ export async function exchangeGitHubCode(code: string): Promise<{
     });
 
     const tokenData = (await tokenRes.json()) as { access_token?: string; error?: string };
-    if (!tokenData.access_token) return null;
+    if (!tokenData.access_token) {
+      console.error("[auth] 换取 access_token 失败:", JSON.stringify(tokenData));
+      return null;
+    }
 
+    console.log("[auth] access_token 换取成功，正在获取 GitHub 用户信息...");
     const userRes = await fetch("https://api.github.com/user", {
       headers: {
         Authorization: `Bearer ${tokenData.access_token}`,
@@ -74,6 +91,11 @@ export async function exchangeGitHubCode(code: string): Promise<{
       },
     });
 
+    if (!userRes.ok) {
+      console.error(`[auth] 获取 GitHub 用户信息失败: HTTP ${userRes.status}`);
+      return null;
+    }
+
     const userData = (await userRes.json()) as {
       id: number;
       login: string;
@@ -81,8 +103,10 @@ export async function exchangeGitHubCode(code: string): Promise<{
       avatar_url?: string;
     };
 
+    console.log(`[auth] GitHub 用户信息获取成功: login=${userData.login}, id=${userData.id}`);
     return userData;
-  } catch {
+  } catch (e) {
+    console.error("[auth] exchangeGitHubCode 异常:", e);
     return null;
   }
 }
