@@ -33,7 +33,8 @@ export async function GET(request: Request): Promise<Response> {
     const settings = await getUserSettings(userId);
 
     return Response.json({ success: true, data: { user, settings } });
-  } catch {
+  } catch (e) {
+    console.error("Auth me error:", e);
     return Response.json(
       { success: false, error: { message: "Internal server error" } },
       { status: 500 }

@@ -1,5 +1,5 @@
 import { exchangeGitHubCode, createToken } from "@/lib/auth";
-import { upsertUser } from "@/lib/db";
+import { upsertUser, runMigrations } from "@/lib/db";
 
 export const runtime = "edge";
 
@@ -23,6 +23,7 @@ export async function GET(request: Request): Promise<Response> {
       );
     }
 
+    await runMigrations();
     await upsertUser(githubUser.id, githubUser.login, githubUser.name, githubUser.avatar_url);
 
     const token = await createToken(githubUser.id);
@@ -34,7 +35,8 @@ export async function GET(request: Request): Promise<Response> {
         "Set-Cookie": `funds_token=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=604800`,
       },
     });
-  } catch {
+  } catch (e) {
+    console.error("GitHub callback error:", e);
     return Response.json(
       { success: false, error: { message: "Internal server error" } },
       { status: 500 }
