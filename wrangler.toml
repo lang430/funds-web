@@ -1,7 +1,10 @@
 name = "funds-web"
-compatibility_date = "2025-05-01"
+compatibility_date = "2025-10-01"
 compatibility_flags = ["nodejs_compat"]
 main = ".open-next/worker.js"
+
+[assets]
+directory = ".open-next/assets"
 
 [[d1_databases]]
 binding = "DB"
