@@ -29,6 +29,33 @@ export async function verifyToken(token: string): Promise<number | null> {
   }
 }
 
+/** 验证 Cloudflare Turnstile token，返回 true 表示通过 */
+export async function verifyTurnstileToken(token: string): Promise<boolean> {
+  const secretKey = getEnv("TURNSTILE_SECRET_KEY");
+  if (!secretKey) {
+    console.error("[auth] verifyTurnstileToken 失败: TURNSTILE_SECRET_KEY 未配置");
+    return false;
+  }
+
+  try {
+    const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ secret: secretKey, response: token }),
+    });
+
+    const data = (await res.json()) as { success: boolean; "error-codes"?: string[] };
+    if (!data.success) {
+      console.warn("[auth] Turnstile 验证失败:", data["error-codes"]);
+      return false;
+    }
+    return true;
+  } catch (e) {
+    console.error("[auth] Turnstile 验证请求异常:", e);
+    return false;
+  }
+}
+
 export async function getUserIdFromRequest(request: Request): Promise<number | null> {
   const cookie = request.headers.get("cookie") || "";
   const match = cookie.match(/funds_token=([^;]+)/);

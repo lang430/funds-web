@@ -8,13 +8,34 @@ export const metadata: Metadata = {
   description: "实时查看您关注的基金，助您快速获取实时数据",
 };
 
-export default function RootLayout({
+async function getTurnstileSiteKey(): Promise<string> {
+  try {
+    const { getCloudflareContext } = await import("@opennextjs/cloudflare");
+    const { env } = getCloudflareContext();
+    return ((env as Record<string, string>).TURNSTILE_SITE_KEY) || "";
+  } catch {
+    return process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "";
+  }
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const turnstileSiteKey = await getTurnstileSiteKey();
+
   return (
     <html lang="zh-CN" suppressHydrationWarning>
+      <head>
+        {turnstileSiteKey && (
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `window.__TURNSTILE_SITE_KEY = "${turnstileSiteKey}";`,
+            }}
+          />
+        )}
+      </head>
       <body className="min-h-screen antialiased">
         <ThemeProvider>
           <AuthProvider>{children}</AuthProvider>
