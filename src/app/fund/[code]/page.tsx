@@ -9,8 +9,6 @@ import { PositionTable } from "@/components/position-table";
 import { useTheme } from "@/components/theme-provider";
 import type { FundInfoRaw, FundPositionRaw } from "@/lib/api/types";
 
-export const runtime = "edge";
-
 const API_BASE = "/api/funds";
 
 interface ApiResponse<T> {

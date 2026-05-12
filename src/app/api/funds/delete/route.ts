@@ -1,8 +1,6 @@
 import { getUserIdFromRequest } from "@/lib/auth";
 import { deleteFund } from "@/lib/db";
 
-export const runtime = "edge";
-
 export async function DELETE(request: Request): Promise<Response> {
   try {
     const userId = await getUserIdFromRequest(request);

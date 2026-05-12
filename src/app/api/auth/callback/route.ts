@@ -1,8 +1,6 @@
 import { exchangeGitHubCode, createToken } from "@/lib/auth";
 import { upsertUser, runMigrations } from "@/lib/db";
 
-export const runtime = "edge";
-
 export async function GET(request: Request): Promise<Response> {
   try {
     console.log("[auth/callback] 收到 GitHub 回调");

@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { getUserIdFromRequest } from "@/lib/auth";
 import { getUserSettings, upsertUserSettings } from "@/lib/db";
 
-export const runtime = "edge";
 
 export async function GET(request: NextRequest) {
   const userId = await getUserIdFromRequest(request);

@@ -9,8 +9,6 @@ import {
 } from "@/lib/calc";
 import type { FundValuation } from "@/lib/api/types";
 
-export const runtime = "edge";
-
 export async function GET(request: Request): Promise<Response> {
   try {
     const userId = await getUserIdFromRequest(request);

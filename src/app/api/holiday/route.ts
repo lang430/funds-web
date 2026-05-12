@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import { getHoliday as fetchHoliday } from "@/lib/api/eastmoney";
 import { isDuringDate, isHoliday } from "@/lib/calc";
 
-export const runtime = "edge";
-
 export async function GET() {
   try {
     const holiday = await fetchHoliday();

@@ -1,8 +1,6 @@
 import { getUserIdFromRequest, verifyToken } from "@/lib/auth";
 import { getUserById, getUserSettings } from "@/lib/db";
 
-export const runtime = "edge";
-
 export async function GET(request: Request): Promise<Response> {
   try {
     const cookie = request.headers.get("cookie") || "";

@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import { getEnv } from "@/lib/auth";
 
-export const runtime = "edge";
-
 export async function GET() {
   try {
     console.log("[auth/login] 开始处理登录请求");

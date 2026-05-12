@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { getUserIdFromRequest } from "@/lib/auth";
 import { getIndexChart } from "@/lib/api/eastmoney";
 
-export const runtime = "edge";
-
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ code: string }> }

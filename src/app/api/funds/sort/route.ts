@@ -1,8 +1,6 @@
 import { getUserIdFromRequest } from "@/lib/auth";
 import { updateFundSort } from "@/lib/db";
 
-export const runtime = "edge";
-
 export async function PATCH(request: Request): Promise<Response> {
   try {
     const userId = await getUserIdFromRequest(request);

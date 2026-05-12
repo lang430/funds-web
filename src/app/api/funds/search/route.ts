@@ -1,7 +1,5 @@
 import { searchFunds } from "@/lib/api/eastmoney";
 
-export const runtime = "edge";
-
 export async function GET(request: Request): Promise<Response> {
   try {
     const url = new URL(request.url);
