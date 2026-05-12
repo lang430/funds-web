@@ -125,8 +125,8 @@ export function FundTable({ isEdit, onRefresh }: Props) {
   }
 
   return (
-    <div className="responsive-table">
-      <table className="w-full border-collapse text-[0.7rem] sm:text-xs">
+    <div className="overflow-x-auto">
+      <table className="w-full border-collapse text-[0.65rem] sm:text-[0.7rem]">
         <thead>
           <tr className="border-b border-gray-200 dark:border-border-dark sticky top-0 bg-white dark:bg-bg-dark z-10">
             {isEdit && <th className="px-1 py-2 w-6" />}
@@ -295,7 +295,7 @@ export function FundTable({ isEdit, onRefresh }: Props) {
       </table>
       {isEdit && (
         <div className="mt-3 space-y-2 border-t border-gray-200 dark:border-border-dark pt-3">
-          <p className="text-[0.7rem] sm:text-xs text-gray-500 dark:text-text-dark mb-2">编辑份额与成本</p>
+          <p className="text-[0.65rem] sm:text-[0.7rem] text-gray-500 dark:text-text-dark mb-2">编辑份额与成本</p>
           {sorted.map((item) => {
             const code = item.fundcode;
             const fundItem = fundList.find((f) => f.code === code);
@@ -307,7 +307,7 @@ export function FundTable({ isEdit, onRefresh }: Props) {
             return (
               <div
                 key={code}
-                className="flex items-center gap-2 text-[0.7rem] sm:text-xs"
+                className="flex items-center gap-2 text-[0.65rem] sm:text-[0.7rem]"
               >
                 <span className="w-[120px] truncate text-gray-700 dark:text-text-dark">
                   {item.name}
@@ -324,7 +324,7 @@ export function FundTable({ isEdit, onRefresh }: Props) {
                     }));
                     debouncedUpdate(code, "shares", e.target.value);
                   }}
-                  className="w-20 px-2 py-1 border border-gray-200 dark:border-border-dark rounded text-[0.7rem] sm:text-xs bg-white dark:bg-gray-800 text-gray-700 dark:text-text-dark"
+                  className="w-20 px-2 py-1 border border-gray-200 dark:border-border-dark rounded text-[0.65rem] sm:text-[0.7rem] bg-white dark:bg-gray-800 text-gray-700 dark:text-text-dark"
                 />
                 <input
                   type="number"
@@ -338,7 +338,7 @@ export function FundTable({ isEdit, onRefresh }: Props) {
                     }));
                     debouncedUpdate(code, "cost", e.target.value);
                   }}
-                  className="w-20 px-2 py-1 border border-gray-200 dark:border-border-dark rounded text-[0.7rem] sm:text-xs bg-white dark:bg-gray-800 text-gray-700 dark:text-text-dark"
+                  className="w-20 px-2 py-1 border border-gray-200 dark:border-border-dark rounded text-[0.65rem] sm:text-[0.7rem] bg-white dark:bg-gray-800 text-gray-700 dark:text-text-dark"
                 />
               </div>
             );

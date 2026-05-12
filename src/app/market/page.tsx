@@ -37,7 +37,7 @@ export default function MarketPage() {
   return (
     <div className={`min-h-screen bg-zinc-50 dark:bg-zinc-950 ${darkMode ? "dark" : ""}`}>
       <NavBar />
-      <main className="max-w-4xl mx-auto px-3 sm:px-4 py-3">
+      <main className="w-full px-3 sm:px-5 py-3 sm:py-4">
         {loading ? (
           <div className="flex items-center justify-center py-20">
             <Loader2 className="w-5 h-5 animate-spin text-zinc-400" />

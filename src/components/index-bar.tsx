@@ -73,87 +73,99 @@ export function IndexBar({ isEdit }: Props) {
   );
 
   return (
-    <div className="flex gap-1.5 sm:gap-2 mb-3 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-none">
-      {indexData && indexData.length > 0 && indexData.map((item, i) => {
-        const code = selectedCodes[i];
-        if (!code) return null;
-        const label =
-          DEFAULT_INDICES.find((d) => d.value === code)?.label ?? code;
-        const isFocused = focusedIndex === code;
-        const change = item.f3 ?? 0;
-        const changePercent = item.f13 ?? 0;
-        const isUp = change >= 0;
-        const colorClass = isUp ? "color-up" : "color-down";
+    <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
+      <div className="px-4 py-2.5 border-b border-zinc-100 dark:border-zinc-800">
+        <h2 className="text-[0.75rem] sm:text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+          市场行情
+        </h2>
+      </div>
+      <div className="p-3 sm:p-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          {indexData && indexData.length > 0 && indexData.map((item, i) => {
+            const code = selectedCodes[i];
+            if (!code) return null;
+            const label = DEFAULT_INDICES.find((d) => d.value === code)?.label ?? code;
+            const isFocused = focusedIndex === code;
+            const change = item.f3 ?? 0;
+            const changePercent = item.f13 ?? 0;
+            const isUp = change >= 0;
+            const colorClass = isUp ? "color-up" : "color-down";
 
-        return (
-          <div
-            key={code}
-            className={`relative flex flex-col items-center shrink-0 min-w-[72px] sm:min-w-[80px] px-2 sm:px-2.5 py-1.5 rounded border border-gray-200 dark:border-border-dark ${
-              isFocused ? "ring-1 ring-primary" : ""
-            }`}
-          >
-            {isEdit && (
-              <button
-                onClick={() => removeIndex(i)}
-                className="absolute -top-1.5 -right-1.5 w-4 h-4 flex items-center justify-center rounded-full bg-red-500 text-white hover:bg-red-600"
-                title="移除"
+            return (
+              <div
+                key={code}
+                className={`relative rounded-lg border p-2.5 sm:p-3 ${
+                  isFocused
+                    ? "ring-1 ring-primary border-primary/30 bg-primary/[0.02]"
+                    : "border-zinc-100 dark:border-zinc-800 hover:border-zinc-200 dark:hover:border-zinc-700"
+                }`}
               >
-                <X size={10} />
-              </button>
-            )}
-            {isEdit && (
+                {isEdit && (
+                  <button
+                    onClick={() => removeIndex(i)}
+                    className="absolute -top-1.5 -right-1.5 w-4 h-4 flex items-center justify-center rounded-full bg-red-500 text-white hover:bg-red-600 z-10"
+                    title="移除"
+                  >
+                    <X size={10} />
+                  </button>
+                )}
+                {isEdit && (
+                  <button
+                    onClick={() => setFocusedIndex(isFocused ? null : code)}
+                    className={`absolute -top-1.5 left-0 w-4 h-4 flex items-center justify-center ${
+                      isFocused ? "text-yellow-400" : "text-zinc-300"
+                    } hover:text-yellow-400 z-10`}
+                    title="关注"
+                  >
+                    <Star size={10} />
+                  </button>
+                )}
+                <p className="text-[0.6rem] sm:text-[0.65rem] text-zinc-400 dark:text-zinc-500 truncate mb-1">
+                  {label}
+                </p>
+                <p className={`text-xs sm:text-sm font-bold font-mono ${colorClass}`}>
+                  {item.f2}
+                </p>
+                <div className="flex items-center gap-1.5 mt-0.5">
+                  <span className={`text-[0.6rem] sm:text-[0.65rem] font-mono ${colorClass}`}>
+                    {formatChange(change)}
+                  </span>
+                  <span className={`text-[0.6rem] sm:text-[0.65rem] font-mono ${colorClass}`}>
+                    {formatChangePercent(changePercent)}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+          {isEdit && selectedCodes.length < 4 && (
+            <div className="relative flex items-center justify-center rounded-lg border border-dashed border-zinc-300 dark:border-zinc-600 min-h-[80px]" ref={selectRef}>
               <button
-                onClick={() => setFocusedIndex(isFocused ? null : code)}
-                className={`absolute -top-1.5 left-0 w-4 h-4 flex items-center justify-center ${
-                  isFocused ? "text-yellow-400" : "text-gray-400"
-                } hover:text-yellow-400`}
-                title="关注"
+                onClick={() => setShowSelect(!showSelect)}
+                className="flex items-center gap-1 text-[0.65rem] text-zinc-400 hover:text-primary transition-colors"
               >
-                <Star size={10} />
+                <Plus size={14} />
+                添加指数
               </button>
-            )}
-            <h5 className="text-[0.7rem] sm:text-xs text-gray-500 dark:text-text-dark truncate max-w-[72px] sm:max-w-[80px]">
-              {label}
-            </h5>
-            <span className={`text-[0.75rem] sm:text-xs font-bold ${colorClass}`}>
-              {item.f2}
-            </span>
-            <span className={`text-[0.6rem] sm:text-[10px] ${colorClass}`}>
-              {formatChange(change)}
-            </span>
-            <span className={`text-[0.6rem] sm:text-[10px] ${colorClass}`}>
-              {formatChangePercent(changePercent)}
-            </span>
-          </div>
-        );
-      })}
-      {isEdit && selectedCodes.length < 4 && (
-        <div className="relative shrink-0" ref={selectRef}>
-          <button
-            onClick={() => setShowSelect(!showSelect)}
-            className="flex items-center justify-center w-8 h-8 rounded border border-dashed border-gray-300 dark:border-border-dark hover:border-primary text-gray-400 hover:text-primary"
-            title="添加指数"
-          >
-            <Plus size={14} />
-          </button>
-          {showSelect && availableIndices.length > 0 && (
-            <div className="absolute top-full left-0 mt-1 z-50 bg-white dark:bg-gray-800 border border-gray-200 dark:border-border-dark rounded shadow-lg max-h-48 overflow-y-auto min-w-[120px]">
-              {availableIndices.map((item) => (
-                <button
-                  key={item.value}
-                  onClick={() => {
-                    addIndex(item.value);
-                    setShowSelect(false);
-                  }}
-                  className="block w-full text-left px-3 py-1.5 text-[0.7rem] hover:bg-gray-100 dark:hover:bg-white/10 text-gray-700 dark:text-text-dark"
-                >
-                  {item.label}
-                </button>
-              ))}
+              {showSelect && availableIndices.length > 0 && (
+                <div className="absolute top-full left-0 mt-1 z-50 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg shadow-lg max-h-44 overflow-y-auto min-w-[140px]">
+                  {availableIndices.map((item) => (
+                    <button
+                      key={item.value}
+                      onClick={() => {
+                        addIndex(item.value);
+                        setShowSelect(false);
+                      }}
+                      className="block w-full text-left px-3 py-1.5 text-[0.65rem] hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300"
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>
-      )}
+      </div>
     </div>
   );
 }

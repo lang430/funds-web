@@ -8,7 +8,6 @@
   --color-surface-dark: rgba(255, 255, 255, 0.12);
   --color-text-dark: rgba(255, 255, 255, 0.6);
   --color-border-dark: rgba(255, 255, 255, 0.38);
-  --breakpoint-xs: 480px;
 }
 
 :root {
@@ -22,13 +21,7 @@
 }
 
 html {
-  font-size: 13px;
-}
-
-@media (max-width: 639px) {
-  html {
-    font-size: 14px;
-  }
+  font-size: 14px;
 }
 
 body {
@@ -37,6 +30,7 @@ body {
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
     "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
   font-size: 0.85rem;
+  overflow-x: hidden;
 }
 
 .normal-font {
@@ -62,16 +56,9 @@ body {
 }
 .animate-spin-slow { animation: spin-slow 1.5s linear infinite; }
 
-/* 移动端表格水平滚动 */
-.responsive-table {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-.responsive-table table {
-  min-width: 600px;
-}
+.scrollbar-none { scrollbar-width: none; }
+.scrollbar-none::-webkit-scrollbar { display: none; }
 
-/* Turnstile 容器 */
 .turnstile-container {
   min-height: 65px;
   display: flex;
