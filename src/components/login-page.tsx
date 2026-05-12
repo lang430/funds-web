@@ -1,23 +1,31 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Turnstile } from "@marsidev/react-turnstile";
 
 function getTurnstileSiteKey(): string {
-  if (typeof window !== "undefined" && (window as unknown as Record<string, string>).__TURNSTILE_SITE_KEY) {
-    return (window as unknown as Record<string, string>).__TURNSTILE_SITE_KEY;
+  if (typeof window !== "undefined") {
+    const win = window as unknown as Record<string, string>;
+    if (win.__TURNSTILE_SITE_KEY) return win.__TURNSTILE_SITE_KEY;
   }
   return "";
 }
 
 export function LoginPage() {
+  const siteKey = useMemo(() => getTurnstileSiteKey(), []);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [verifying, setVerifying] = useState(false);
 
+  const canLogin = siteKey ? !!turnstileToken : true;
+
   const handleLogin = () => {
-    if (!turnstileToken) return;
+    if (!canLogin) return;
     setVerifying(true);
-    window.location.href = `/api/auth/login?token=${encodeURIComponent(turnstileToken)}`;
+    if (siteKey && turnstileToken) {
+      window.location.href = `/api/auth/login?token=${encodeURIComponent(turnstileToken)}`;
+    } else {
+      window.location.href = "/api/auth/login";
+    }
   };
 
   return (
@@ -28,19 +36,21 @@ export function LoginPage() {
           实时查看您关注的基金
         </p>
         <div className="flex flex-col items-center gap-4">
-          <div className="flex justify-center">
-            <Turnstile
-              siteKey={getTurnstileSiteKey()}
-              onSuccess={(token) => setTurnstileToken(token)}
-              onError={() => setTurnstileToken(null)}
-              onExpire={() => setTurnstileToken(null)}
-            />
-          </div>
+          {siteKey && (
+            <div className="flex justify-center">
+              <Turnstile
+                siteKey={siteKey}
+                onSuccess={(token) => setTurnstileToken(token)}
+                onError={() => setTurnstileToken(null)}
+                onExpire={() => setTurnstileToken(null)}
+              />
+            </div>
+          )}
           <button
             onClick={handleLogin}
-            disabled={!turnstileToken || verifying}
+            disabled={!canLogin || verifying}
             className={`inline-flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-medium transition-all ${
-              turnstileToken && !verifying
+              canLogin && !verifying
                 ? "bg-gray-900 text-white dark:bg-white dark:text-gray-900 hover:opacity-90 cursor-pointer"
                 : "bg-gray-300 text-gray-500 dark:bg-gray-600 dark:text-gray-400 cursor-not-allowed"
             }`}

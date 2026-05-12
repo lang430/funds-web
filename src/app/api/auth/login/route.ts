@@ -8,23 +8,26 @@ export async function GET(request: Request) {
     console.log("[auth/login] 开始处理登录请求");
     const url = new URL(request.url);
     const turnstileToken = url.searchParams.get("token");
+    const turnstileConfigured = !!getEnv("TURNSTILE_SECRET_KEY");
 
-    if (!turnstileToken) {
-      console.warn("[auth/login] 缺少 Turnstile token");
-      return Response.json(
-        { success: false, error: { message: "请完成人机验证" } },
-        { status: 400 }
-      );
-    }
+    if (turnstileConfigured) {
+      if (!turnstileToken) {
+        console.warn("[auth/login] 缺少 Turnstile token");
+        return Response.json(
+          { success: false, error: { message: "请完成人机验证" } },
+          { status: 400 }
+        );
+      }
 
-    console.log("[auth/login] 验证 Turnstile token...");
-    const isValid = await verifyTurnstileToken(turnstileToken);
-    if (!isValid) {
-      console.warn("[auth/login] Turnstile 验证未通过");
-      return Response.json(
-        { success: false, error: { message: "人机验证失败，请重试" } },
-        { status: 403 }
-      );
+      console.log("[auth/login] 验证 Turnstile token...");
+      const isValid = await verifyTurnstileToken(turnstileToken);
+      if (!isValid) {
+        console.warn("[auth/login] Turnstile 验证未通过");
+        return Response.json(
+          { success: false, error: { message: "人机验证失败，请重试" } },
+          { status: 403 }
+        );
+      }
     }
 
     const clientId = getEnv("GITHUB_CLIENT_ID");
