@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ArrowLeft, Loader2 } from "lucide-react";
-import Link from "next/link";
+import { Loader2 } from "lucide-react";
+import { NavBar } from "@/components/nav-bar";
 import { MarketCenter } from "@/components/market-center";
 import { useSettingsStore } from "@/stores/settings-store";
 import type { MarketResponse } from "@/lib/api/types";
@@ -35,20 +35,9 @@ export default function MarketPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
-      <header className="sticky top-0 z-10 flex items-center gap-3 px-4 py-3 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800">
-        <Link
-          href="/"
-          className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4 text-zinc-600 dark:text-zinc-400" />
-        </Link>
-        <h1 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-          行情中心
-        </h1>
-      </header>
-
-      <main className="p-4">
+    <div className={`min-h-screen bg-zinc-50 dark:bg-zinc-950 ${darkMode ? "dark" : ""}`}>
+      <NavBar />
+      <main className="max-w-4xl mx-auto px-4 py-3">
         {loading ? (
           <div className="flex items-center justify-center py-20">
             <Loader2 className="w-5 h-5 animate-spin text-zinc-400" />

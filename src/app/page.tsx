@@ -5,6 +5,7 @@ import { useFundStore } from "@/stores/fund-store";
 import { useIndicesStore } from "@/stores/indices-store";
 import { useSettingsStore } from "@/stores/settings-store";
 import { useAuthStore } from "@/stores/auth-store";
+import { NavBar } from "@/components/nav-bar";
 import { IndexBar } from "@/components/index-bar";
 import { FundTable } from "@/components/fund-table";
 import { ControlBar } from "@/components/control-bar";
@@ -14,25 +15,16 @@ import type { IndexDiff, FundValuation } from "@/lib/api/types";
 const INDEX_POLL_INTERVAL = 5000;
 const FUNDS_POLL_INTERVAL = 60000;
 
-interface FundResponse {
-  valuations: FundValuation[];
-  fundList: { code: string; shares: number; cost: number }[];
-}
-
-interface HolidayResponse {
-  isDuringDate: boolean;
-}
-
 export default function HomePage() {
-  const { fundList, valuations, loading, setFundList, setValuations, setLoading,
+  const { valuations, loading, setValuations, setLoading,
     isEdit, setIsEdit, isLiveUpdate, setIsLiveUpdate,
     isDuringDate, setIsDuringDate } = useFundStore();
   const { selectedCodes, setIndexData, setLoading: setIndexLoading } = useIndicesStore();
-  const { darkMode, normalFont, showGains, showCost, showCostRate, showAmount, showGSZ } = useSettingsStore();
+  const { darkMode, normalFont, showGains, showCost } = useSettingsStore();
   const { deviceId } = useAuthStore();
 
-  const indicesTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const fundsTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const indicesTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const fundsTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const fetchIndices = useCallback(async () => {
     if (selectedCodes.length === 0) return;
@@ -61,13 +53,13 @@ export default function HomePage() {
     } finally {
       setLoading(false);
     }
-  }, [deviceId, setValuations, setFundList, setLoading]);
+  }, [deviceId, setValuations, setLoading]);
 
   const fetchHoliday = useCallback(async () => {
     try {
       const res = await fetch("/api/holiday");
       if (!res.ok) return;
-      const data: HolidayResponse = await res.json();
+      const data = await res.json() as { isDuringDate: boolean };
       if (data.isDuringDate !== undefined) {
         setIsDuringDate(data.isDuringDate);
       }
@@ -116,31 +108,42 @@ export default function HomePage() {
   }, [isLiveUpdate, setIsLiveUpdate]);
 
   return (
-    <div className={`max-w-4xl mx-auto p-3 font-sans text-xs ${normalFont ? "normal-font" : ""} ${darkMode ? "dark:bg-bg-dark" : ""}`}>
-      <IndexBar isEdit={isEdit} />
-      {loading ? (
-        <div className="flex items-center flex-col gap-3 p-12 text-zinc-400">
-          <div className="animate-spin-slow w-6 h-6 border-2 border-primary border-t-transparent rounded-full" />
-          <span>加载中…</span>
-        </div>
-      ) : valuations.length === 0 ? (
-        <div className="flex items-center flex-col gap-3 p-12 text-zinc-400">
-          <span>暂无基金数据</span>
-        </div>
-      ) : (
-        <>
-          <ControlBar
-            isEdit={isEdit}
-            isLiveUpdate={isLiveUpdate}
-            isDuringDate={isDuringDate}
-            onToggleEdit={handleToggleEdit}
-            onToggleLiveUpdate={handleToggleLiveUpdate}
-            onRefresh={refresh}
-          />
-          <FundTable isEdit={isEdit} onRefresh={refresh} />
-          {(showGains || showCost) && <SummaryBar />}
-        </>
-      )}
+    <div className={`min-h-screen bg-zinc-50 dark:bg-zinc-950 ${darkMode ? "dark" : ""}`}>
+      <NavBar />
+      <main className={`max-w-4xl mx-auto px-4 py-3 font-sans text-xs ${normalFont ? "text-sm" : ""}`}>
+        <IndexBar isEdit={isEdit} />
+        {loading ? (
+          <div className="flex items-center justify-center py-16">
+            <div className="flex flex-col items-center gap-3">
+              <div className="w-5 h-5 border-2 border-zinc-300 dark:border-zinc-600 border-t-zinc-900 dark:border-t-zinc-300 rounded-full animate-spin" />
+              <span className="text-zinc-400 dark:text-zinc-500">加载中...</span>
+            </div>
+          </div>
+        ) : valuations.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-16 gap-3">
+            <div className="w-10 h-10 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
+              <span className="text-zinc-300 dark:text-zinc-600 text-lg">$</span>
+            </div>
+            <span className="text-zinc-400 dark:text-zinc-500">暂无基金数据</span>
+            <p className="text-[11px] text-zinc-300 dark:text-zinc-600">
+              点击编辑按钮添加基金
+            </p>
+          </div>
+        ) : (
+          <>
+            <ControlBar
+              isEdit={isEdit}
+              isLiveUpdate={isLiveUpdate}
+              isDuringDate={isDuringDate}
+              onToggleEdit={handleToggleEdit}
+              onToggleLiveUpdate={handleToggleLiveUpdate}
+              onRefresh={refresh}
+            />
+            <FundTable isEdit={isEdit} onRefresh={refresh} />
+            {(showGains || showCost) && <SummaryBar />}
+          </>
+        )}
+      </main>
     </div>
   );
 }

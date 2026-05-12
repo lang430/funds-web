@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft, Loader2 } from "lucide-react";
+import { NavBar } from "@/components/nav-bar";
 import { FundInfoCard } from "@/components/fund-info-card";
 import { FundChart } from "@/components/fund-chart";
 import { PositionTable } from "@/components/position-table";
@@ -32,6 +33,15 @@ export default function FundDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [chartRange, setChartRange] = useState("1m");
+
+  async function fetchJson<T extends ApiResponse<unknown>>(res: Response): Promise<T | null> {
+    try {
+      const j: T = await res.json();
+      return j.success ? j : null;
+    } catch {
+      return null;
+    }
+  }
 
   const fetchAll = useCallback(async () => {
     setLoading(true);
@@ -73,44 +83,42 @@ export default function FundDetailPage() {
     }
   }, [code, chartRange]);
 
-  async function fetchJson<T extends ApiResponse<unknown>>(res: Response): Promise<T | null> {
-    try {
-      const j: T = await res.json();
-      return j.success ? j : null;
-    } catch {
-      return null;
-    }
-  }
-
   useEffect(() => {
     fetchAll();
   }, [fetchAll]);
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-zinc-50 dark:bg-zinc-950">
-        <Loader2 className="w-8 h-8 animate-spin text-zinc-400" />
+      <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
+        <NavBar />
+        <div className="flex items-center justify-center py-20">
+          <Loader2 className="w-5 h-5 animate-spin text-zinc-400" />
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen gap-4 bg-zinc-50 dark:bg-zinc-950">
-        <p className="text-sm text-zinc-500">{error}</p>
-        <button
-          onClick={() => router.back()}
-          className="px-4 py-1.5 text-xs rounded-md bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-700"
-        >
-          返回
-        </button>
+      <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
+        <NavBar />
+        <div className="flex flex-col items-center justify-center py-20 gap-4">
+          <p className="text-sm text-zinc-500">{error}</p>
+          <button
+            onClick={() => router.back()}
+            className="px-4 py-1.5 text-xs rounded-md bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-700"
+          >
+            返回
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
-      <div className="mx-auto max-w-4xl px-4 py-6 space-y-4">
+      <NavBar />
+      <div className="mx-auto max-w-4xl px-4 py-4 space-y-4">
         <button
           onClick={() => router.back()}
           className="inline-flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors"
