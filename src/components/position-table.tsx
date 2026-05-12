@@ -6,12 +6,18 @@ import type { FundPositionRaw } from "@/lib/api/types";
 
 interface Props {
   data: FundPositionRaw[];
-  darkMode: boolean;
+  darkMode?: boolean;
 }
 
 type SortDir = "none" | "asc" | "desc";
 
-export function PositionTable({ data, darkMode: _darkMode }: Props) {
+function getSortIcon(dir: SortDir) {
+  if (dir === "asc") return <ArrowUp className="w-3 h-3" />;
+  if (dir === "desc") return <ArrowDown className="w-3 h-3" />;
+  return <ArrowUpDown className="w-3 h-3" />;
+}
+
+export function PositionTable({ data }: Props) {
   const [sortDir, setSortDir] = useState<SortDir>("desc");
 
   const sorted = useMemo(() => {
@@ -25,12 +31,6 @@ export function PositionTable({ data, darkMode: _darkMode }: Props) {
 
   const toggleSort = () => {
     setSortDir((prev) => (prev === "desc" ? "asc" : prev === "asc" ? "none" : "desc"));
-  };
-
-  const SortIcon = () => {
-    if (sortDir === "asc") return <ArrowUp className="w-3 h-3" />;
-    if (sortDir === "desc") return <ArrowDown className="w-3 h-3" />;
-    return <ArrowUpDown className="w-3 h-3" />;
   };
 
   if (data.length === 0) {
@@ -60,7 +60,7 @@ export function PositionTable({ data, darkMode: _darkMode }: Props) {
               >
                 <span className="inline-flex items-center gap-1">
                   占比
-                  <SortIcon />
+                  {getSortIcon(sortDir)}
                 </span>
               </th>
             </tr>
