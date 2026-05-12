@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@opennextjs/cloudflare':
+        specifier: ^1.19.8
+        version: 1.19.8(next@16.2.6(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(wrangler@4.90.0(@cloudflare/workers-types@4.20260508.1))
       '@radix-ui/react-dialog':
         specifier: ^1.1.15
         version: 1.1.15(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -69,9 +72,6 @@ importers:
       '@cloudflare/workers-types':
         specifier: ^4.20260508.1
         version: 4.20260508.1
-      '@opennextjs/cloudflare':
-        specifier: ^1.19.8
-        version: 1.19.8(next@16.2.6(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(wrangler@4.90.0(@cloudflare/workers-types@4.20260508.1))
       '@tailwindcss/postcss':
         specifier: ^4
         version: 4.2.4

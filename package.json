@@ -29,7 +29,8 @@
     "recharts": "^3.8.1",
     "xlsx": "^0.18.5",
     "zod": "^4.4.3",
-    "zustand": "^5.0.13"
+    "zustand": "^5.0.13",
+    "@opennextjs/cloudflare": "^1.19.8"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
@@ -41,7 +42,6 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260508.1",
-    "@opennextjs/cloudflare": "^1.19.8",
     "@tailwindcss/postcss": "^4",
     "@types/file-saver": "^2.0.7",
     "@types/node": "^20",
