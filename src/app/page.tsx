@@ -24,7 +24,7 @@ interface HolidayResponse {
 }
 
 export default function HomePage() {
-  const { fundList, valuations, setFundList, setValuations, setLoading,
+  const { fundList, valuations, loading, setFundList, setValuations, setLoading,
     isEdit, setIsEdit, isLiveUpdate, setIsLiveUpdate,
     isDuringDate, setIsDuringDate } = useFundStore();
   const { selectedCodes, setIndexData, setLoading: setIndexLoading } = useIndicesStore();
@@ -118,10 +118,14 @@ export default function HomePage() {
   return (
     <div className={`max-w-4xl mx-auto p-3 font-sans text-xs ${normalFont ? "normal-font" : ""} ${darkMode ? "dark:bg-bg-dark" : ""}`}>
       <IndexBar isEdit={isEdit} />
-      {valuations.length === 0 ? (
+      {loading ? (
         <div className="flex items-center flex-col gap-3 p-12 text-zinc-400">
           <div className="animate-spin-slow w-6 h-6 border-2 border-primary border-t-transparent rounded-full" />
           <span>加载中…</span>
+        </div>
+      ) : valuations.length === 0 ? (
+        <div className="flex items-center flex-col gap-3 p-12 text-zinc-400">
+          <span>暂无基金数据</span>
         </div>
       ) : (
         <>
