@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useIndicesStore, DEFAULT_INDICES } from "@/stores/indices-store";
 import { Plus, X, Star } from "lucide-react";
-import type { IndexResponse } from "@/lib/api/types";
+import type { IndexDiff } from "@/lib/api/types";
 
 interface Props {
   isEdit: boolean;
@@ -41,9 +41,9 @@ export function IndexBar({ isEdit }: Props) {
     try {
       const res = await fetch(`/api/index?codes=${selectedCodes.join(",")}`);
       if (!res.ok) return;
-      const data: IndexResponse = await res.json();
-      if (data.data?.diff) {
-        setIndexData(data.data.diff);
+      const json = await res.json() as { success: boolean; data: IndexDiff[] };
+      if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+        setIndexData(json.data);
       }
     } catch {
       // 指数数据获取失败

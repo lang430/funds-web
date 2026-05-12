@@ -9,7 +9,7 @@ import { IndexBar } from "@/components/index-bar";
 import { FundTable } from "@/components/fund-table";
 import { ControlBar } from "@/components/control-bar";
 import { SummaryBar } from "@/components/summary-bar";
-import type { IndexResponse, FundValuation } from "@/lib/api/types";
+import type { IndexDiff, FundValuation } from "@/lib/api/types";
 
 const INDEX_POLL_INTERVAL = 5000;
 const FUNDS_POLL_INTERVAL = 60000;
@@ -39,9 +39,9 @@ export default function HomePage() {
     try {
       const res = await fetch(`/api/index?codes=${selectedCodes.join(",")}`);
       if (!res.ok) return;
-      const data: IndexResponse = await res.json();
-      if (data.data?.diff) {
-        setIndexData(data.data.diff);
+      const json = await res.json() as { success: boolean; data: IndexDiff[] };
+      if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+        setIndexData(json.data);
       }
     } catch {
       // 指数数据获取失败，跳过
