@@ -36,7 +36,7 @@ export function PositionTable({ data, darkMode: _darkMode }: Props) {
   if (data.length === 0) {
     return (
       <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4">
-        <p className="text-xs text-zinc-400 text-center py-4">暂无持仓数据</p>
+        <p className="text-[0.7rem] sm:text-xs text-zinc-400 text-center py-4">暂无持仓数据</p>
       </div>
     );
   }
@@ -44,12 +44,12 @@ export function PositionTable({ data, darkMode: _darkMode }: Props) {
   return (
     <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
       <div className="px-4 py-2.5 border-b border-zinc-100 dark:border-zinc-800">
-        <h2 className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+        <h2 className="text-[0.75rem] sm:text-xs font-semibold text-zinc-700 dark:text-zinc-300">
           持仓明细
         </h2>
       </div>
       <div className="max-h-80 overflow-y-auto">
-        <table className="w-full text-xs">
+        <table className="w-full text-[0.7rem] sm:text-xs">
           <thead className="sticky top-0 bg-zinc-50 dark:bg-zinc-800/50">
             <tr className="text-zinc-500 dark:text-zinc-400">
               <th className="px-4 py-2 text-left font-medium w-24">股票代码</th>

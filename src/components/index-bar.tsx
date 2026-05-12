@@ -73,7 +73,7 @@ export function IndexBar({ isEdit }: Props) {
   );
 
   return (
-    <div className="flex flex-wrap gap-2 mb-3">
+    <div className="flex gap-1.5 sm:gap-2 mb-3 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-none">
       {indexData && indexData.length > 0 && indexData.map((item, i) => {
         const code = selectedCodes[i];
         if (!code) return null;
@@ -83,19 +83,19 @@ export function IndexBar({ isEdit }: Props) {
         const change = item.f3 ?? 0;
         const changePercent = item.f13 ?? 0;
         const isUp = change >= 0;
-        const colorClass = isUp ? "text-up" : "text-down";
+        const colorClass = isUp ? "color-up" : "color-down";
 
         return (
           <div
             key={code}
-            className={`relative flex flex-col items-center min-w-[80px] px-2 py-1 rounded border border-gray-200 dark:border-border-dark ${
+            className={`relative flex flex-col items-center shrink-0 min-w-[72px] sm:min-w-[80px] px-2 sm:px-2.5 py-1.5 rounded border border-gray-200 dark:border-border-dark ${
               isFocused ? "ring-1 ring-primary" : ""
             }`}
           >
             {isEdit && (
               <button
                 onClick={() => removeIndex(i)}
-                className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center rounded-full bg-red-500 text-white hover:bg-red-600"
+                className="absolute -top-1.5 -right-1.5 w-4 h-4 flex items-center justify-center rounded-full bg-red-500 text-white hover:bg-red-600"
                 title="移除"
               >
                 <X size={10} />
@@ -104,7 +104,7 @@ export function IndexBar({ isEdit }: Props) {
             {isEdit && (
               <button
                 onClick={() => setFocusedIndex(isFocused ? null : code)}
-                className={`absolute -top-1 left-0 w-4 h-4 flex items-center justify-center ${
+                className={`absolute -top-1.5 left-0 w-4 h-4 flex items-center justify-center ${
                   isFocused ? "text-yellow-400" : "text-gray-400"
                 } hover:text-yellow-400`}
                 title="关注"
@@ -112,23 +112,23 @@ export function IndexBar({ isEdit }: Props) {
                 <Star size={10} />
               </button>
             )}
-            <h5 className="text-xs text-gray-500 dark:text-text-dark truncate max-w-[80px]">
+            <h5 className="text-[0.7rem] sm:text-xs text-gray-500 dark:text-text-dark truncate max-w-[72px] sm:max-w-[80px]">
               {label}
             </h5>
-            <span className={`text-xs font-bold ${colorClass}`}>
+            <span className={`text-[0.75rem] sm:text-xs font-bold ${colorClass}`}>
               {item.f2}
             </span>
-            <span className={`text-[10px] ${colorClass}`}>
+            <span className={`text-[0.6rem] sm:text-[10px] ${colorClass}`}>
               {formatChange(change)}
             </span>
-            <span className={`text-[10px] ${colorClass}`}>
+            <span className={`text-[0.6rem] sm:text-[10px] ${colorClass}`}>
               {formatChangePercent(changePercent)}
             </span>
           </div>
         );
       })}
       {isEdit && selectedCodes.length < 4 && (
-        <div className="relative" ref={selectRef}>
+        <div className="relative shrink-0" ref={selectRef}>
           <button
             onClick={() => setShowSelect(!showSelect)}
             className="flex items-center justify-center w-8 h-8 rounded border border-dashed border-gray-300 dark:border-border-dark hover:border-primary text-gray-400 hover:text-primary"
@@ -145,7 +145,7 @@ export function IndexBar({ isEdit }: Props) {
                     addIndex(item.value);
                     setShowSelect(false);
                   }}
-                  className="block w-full text-left px-3 py-1.5 text-xs hover:bg-gray-100 dark:hover:bg-white/10 text-gray-700 dark:text-text-dark"
+                  className="block w-full text-left px-3 py-1.5 text-[0.7rem] hover:bg-gray-100 dark:hover:bg-white/10 text-gray-700 dark:text-text-dark"
                 >
                   {item.label}
                 </button>

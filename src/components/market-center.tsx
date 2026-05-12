@@ -32,10 +32,10 @@ function FlowRow({ name, up, down }: FlowRowProps) {
 
   return (
     <div className="flex items-center justify-between px-3 py-2 border-b border-zinc-100 dark:border-zinc-800 last:border-0">
-      <span className="text-xs text-zinc-700 dark:text-zinc-300 truncate flex-1 mr-2">
+      <span className="text-[0.7rem] sm:text-xs text-zinc-700 dark:text-zinc-300 truncate flex-1 mr-2">
         {name}
       </span>
-      <div className="flex items-center gap-3 text-xs shrink-0">
+      <div className="flex items-center gap-3 text-[0.7rem] sm:text-xs shrink-0">
         <span className="text-red-500 w-16 text-right tabular-nums">
           {formatFlow(up)}
         </span>
@@ -74,7 +74,7 @@ export function MarketCenter({ data }: MarketCenterProps) {
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
             className={cn(
-              "flex-1 py-2.5 text-xs font-medium transition-colors relative",
+              "flex-1 py-2.5 text-[0.7rem] sm:text-xs font-medium transition-colors relative",
               activeTab === tab.key
                 ? "text-red-500"
                 : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300"
@@ -89,10 +89,10 @@ export function MarketCenter({ data }: MarketCenterProps) {
       </div>
 
       <div className="flex items-center justify-between px-3 py-2 bg-zinc-50 dark:bg-zinc-950 border-b border-zinc-100 dark:border-zinc-800">
-        <span className="text-[10px] text-zinc-400 dark:text-zinc-500 w-1/3">
+        <span className="text-[0.6rem] sm:text-[10px] text-zinc-400 dark:text-zinc-500 w-1/3">
           名称
         </span>
-        <div className="flex items-center gap-3 text-[10px] text-zinc-400 dark:text-zinc-500">
+        <div className="flex items-center gap-3 text-[0.6rem] sm:text-[10px] text-zinc-400 dark:text-zinc-500">
           <span className="w-16 text-right">流入</span>
           <span className="w-16 text-right">流出</span>
           <span className="w-14 text-right">净额</span>
@@ -101,7 +101,7 @@ export function MarketCenter({ data }: MarketCenterProps) {
 
       <div className="max-h-[60vh] overflow-y-auto">
         {currentData.length === 0 ? (
-          <div className="py-12 text-center text-xs text-zinc-400">
+          <div className="py-12 text-center text-[0.7rem] sm:text-xs text-zinc-400">
             暂无数据
           </div>
         ) : (

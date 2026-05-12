@@ -27,7 +27,7 @@ export function SummaryBar() {
 
   return (
     <div
-      className={`mt-3 pt-3 border-t border-gray-200 dark:border-border-dark text-xs ${
+      className={`mt-3 pt-3 border-t border-gray-200 dark:border-border-dark text-[0.7rem] sm:text-xs ${
         darkMode ? "dark:text-text-dark" : ""
       }`}
     >

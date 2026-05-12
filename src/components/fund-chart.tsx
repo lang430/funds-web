@@ -70,7 +70,7 @@ export function FundChart({ data, type: _type, range, onRangeChange, darkMode }:
   if (chartData.length === 0) {
     return (
       <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4">
-        <p className="text-xs text-zinc-400 text-center py-8">暂无走势数据</p>
+        <p className="text-[0.7rem] sm:text-xs text-zinc-400 text-center py-8">暂无走势数据</p>
       </div>
     );
   }

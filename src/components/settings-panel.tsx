@@ -26,11 +26,11 @@ function SectionTitle({
 }) {
   return (
     <div className="mb-3">
-      <h3 className="text-xs font-semibold text-zinc-800 dark:text-zinc-200">
+      <h3 className="text-[0.75rem] sm:text-xs font-semibold text-zinc-800 dark:text-zinc-200">
         {title}
       </h3>
       {desc && (
-        <p className="text-[10px] text-zinc-400 dark:text-zinc-500 mt-0.5">
+        <p className="text-[0.6rem] sm:text-[10px] text-zinc-400 dark:text-zinc-500 mt-0.5">
           {desc}
         </p>
       )}
@@ -49,9 +49,9 @@ function ToggleRow({ label, desc, checked, onChange }: ToggleRowProps) {
   return (
     <div className="flex items-center justify-between py-2 border-b border-zinc-100 dark:border-zinc-800 last:border-0">
       <div>
-        <span className="text-xs text-zinc-700 dark:text-zinc-300">{label}</span>
+        <span className="text-[0.7rem] sm:text-xs text-zinc-700 dark:text-zinc-300">{label}</span>
         {desc && (
-          <p className="text-[10px] text-zinc-400 dark:text-zinc-500 mt-0.5">
+          <p className="text-[0.6rem] sm:text-[10px] text-zinc-400 dark:text-zinc-500 mt-0.5">
             {desc}
           </p>
         )}
@@ -97,8 +97,8 @@ function SliderRow({
   return (
     <div className="py-2 border-b border-zinc-100 dark:border-zinc-800 last:border-0">
       <div className="flex items-center justify-between mb-2">
-        <span className="text-xs text-zinc-700 dark:text-zinc-300">{label}</span>
-        <span className="text-xs text-zinc-500 tabular-nums">
+        <span className="text-[0.7rem] sm:text-xs text-zinc-700 dark:text-zinc-300">{label}</span>
+        <span className="text-[0.7rem] sm:text-xs text-zinc-500 tabular-nums">
           {formatValue ? formatValue(value) : value}
         </span>
       </div>
@@ -366,14 +366,14 @@ export function SettingsPanel() {
           />
           <button
             onClick={() => jsonInputRef.current?.click()}
-            className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg border border-zinc-200 dark:border-zinc-700 text-xs text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+            className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg border border-zinc-200 dark:border-zinc-700 text-[0.7rem] sm:text-xs text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
           >
             <Upload className="w-3 h-3" />
             导入 JSON
           </button>
           <button
             onClick={handleJsonExport}
-            className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg border border-zinc-200 dark:border-zinc-700 text-xs text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+            className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg border border-zinc-200 dark:border-zinc-700 text-[0.7rem] sm:text-xs text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
           >
             <Download className="w-3 h-3" />
             导出 JSON
@@ -387,14 +387,14 @@ export function SettingsPanel() {
           />
           <button
             onClick={() => excelInputRef.current?.click()}
-            className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg border border-zinc-200 dark:border-zinc-700 text-xs text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+            className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg border border-zinc-200 dark:border-zinc-700 text-[0.7rem] sm:text-xs text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
           >
             <Upload className="w-3 h-3" />
             导入 Excel
           </button>
           <button
             onClick={handleExcelExport}
-            className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg border border-zinc-200 dark:border-zinc-700 text-xs text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+            className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg border border-zinc-200 dark:border-zinc-700 text-[0.7rem] sm:text-xs text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
           >
             <Download className="w-3 h-3" />
             导出 Excel
@@ -410,7 +410,7 @@ export function SettingsPanel() {
         />
         <button
           onClick={handleUpdateHoliday}
-          className="flex items-center gap-1.5 py-2 px-4 rounded-lg bg-red-500 text-white text-xs font-medium hover:bg-red-600 transition-colors"
+          className="flex items-center gap-1.5 py-2 px-4 rounded-lg bg-red-500 text-white text-[0.7rem] sm:text-xs font-medium hover:bg-red-600 transition-colors"
         >
           <RotateCw className="w-3 h-3" />
           更新节假日数据
@@ -421,10 +421,10 @@ export function SettingsPanel() {
       <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4">
         <SectionTitle title="关于" />
         <div className="space-y-1.5">
-          <p className="text-xs text-zinc-500 dark:text-zinc-400">
+          <p className="text-[0.7rem] sm:text-xs text-zinc-500 dark:text-zinc-400">
             版本：v{VERSION}
           </p>
-          <p className="text-xs">
+          <p className="text-[0.7rem] sm:text-xs">
             <a
               href="https://github.com/x2rr/funds/blob/main/CHANGELOG.md"
               target="_blank"

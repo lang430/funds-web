@@ -118,7 +118,7 @@ export default function FundDetailPage() {
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
       <NavBar />
-      <div className="mx-auto max-w-4xl px-4 py-4 space-y-4">
+      <div className="mx-auto max-w-4xl px-3 sm:px-4 py-4 space-y-4">
         <button
           onClick={() => router.back()}
           className="inline-flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors"

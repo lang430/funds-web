@@ -10,7 +10,7 @@ export default function SettingsPage() {
   return (
     <div className={`min-h-screen bg-zinc-50 dark:bg-zinc-950 ${darkMode ? "dark" : ""}`}>
       <NavBar />
-      <main className="max-w-4xl mx-auto px-4 py-3">
+      <main className="max-w-4xl mx-auto px-3 sm:px-4 py-3">
         <SettingsPanel />
       </main>
     </div>
