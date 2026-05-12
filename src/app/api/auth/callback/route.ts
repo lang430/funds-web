@@ -1,6 +1,8 @@
 import { exchangeGitHubCode, createToken } from "@/lib/auth";
 import { upsertUser, runMigrations } from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: Request): Promise<Response> {
   try {
     console.log("[auth/callback] 收到 GitHub 回调");
@@ -39,7 +41,7 @@ export async function GET(request: Request): Promise<Response> {
       status: 302,
       headers: {
         Location: "/",
-        "Set-Cookie": `funds_token=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=604800`,
+        "Set-Cookie": `funds_token=${token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=604800`,
       },
     });
   } catch (e) {

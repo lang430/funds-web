@@ -1,5 +1,7 @@
-import { getUserIdFromRequest, verifyToken } from "@/lib/auth";
+import { verifyToken } from "@/lib/auth";
 import { getUserById, getUserSettings } from "@/lib/db";
+
+export const dynamic = "force-dynamic";
 
 export async function GET(request: Request): Promise<Response> {
   try {

@@ -10,24 +10,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const loadFromServer = useSettingsStore((s) => s.loadFromServer);
 
   useEffect(() => {
+    let cancelled = false;
     async function checkAuth() {
       try {
-        const res = await fetch("/api/auth/me");
+        console.log("[auth-provider] 检查认证状态...");
+        const res = await fetch("/api/auth/me", { credentials: "include" });
+        console.log(`[auth-provider] /api/auth/me 响应状态: ${res.status}`);
         if (res.ok) {
-          const json = await res.json() as { success: boolean; data: { user: { id: number; login: string; name?: string; avatar_url?: string }; settings?: Record<string, unknown> } };
-          const { data } = json;
-          setUser(data.user);
-          if (data.settings) {
-            loadFromServer(data.settings as Record<string, number | boolean>);
+          const json = await res.json() as { success: boolean; data?: { user?: { id: number; login: string; name?: string; avatar_url?: string }; settings?: Record<string, unknown> } };
+          console.log(`[auth-provider] /api/auth/me 响应数据: success=${json.success}, hasData=${!!json.data}`);
+          const data = json.data;
+          if (data?.user) {
+            console.log(`[auth-provider] 用户已认证: login=${data.user.login}`);
+            if (!cancelled) {
+              setUser(data.user);
+              if (data.settings) {
+                loadFromServer(data.settings as Record<string, number | boolean>);
+              }
+            }
+            return;
           }
-        } else {
-          setLoading(false);
+          console.warn("[auth-provider] 响应 data.user 为空");
         }
-      } catch {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
+      } catch (err) {
+        console.error("[auth-provider] 认证检查失败:", err);
+        if (!cancelled) setLoading(false);
       }
     }
     checkAuth();
+    return () => { cancelled = true; };
   }, [setUser, setLoading, loadFromServer]);
 
   if (loading) {
