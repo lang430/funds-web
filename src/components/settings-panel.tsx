@@ -25,12 +25,12 @@ function SectionTitle({
   desc?: string;
 }) {
   return (
-    <div className="mb-3">
-      <h3 className="text-[0.75rem] sm:text-xs font-semibold text-zinc-800 dark:text-zinc-200">
+    <div className="mb-4">
+      <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-200">
         {title}
       </h3>
       {desc && (
-        <p className="text-[0.6rem] sm:text-[10px] text-zinc-400 dark:text-zinc-500 mt-0.5">
+        <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">
           {desc}
         </p>
       )}
@@ -47,11 +47,11 @@ interface ToggleRowProps {
 
 function ToggleRow({ label, desc, checked, onChange }: ToggleRowProps) {
   return (
-    <div className="flex items-center justify-between py-2 border-b border-zinc-100 dark:border-zinc-800 last:border-0">
+    <div className="flex items-center justify-between py-3 border-b border-slate-100 dark:border-white/5 last:border-0">
       <div>
-        <span className="text-[0.7rem] sm:text-xs text-zinc-700 dark:text-zinc-300">{label}</span>
+        <span className="text-sm text-slate-700 dark:text-slate-300">{label}</span>
         {desc && (
-          <p className="text-[0.6rem] sm:text-[10px] text-zinc-400 dark:text-zinc-500 mt-0.5">
+          <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">
             {desc}
           </p>
         )}
@@ -61,7 +61,7 @@ function ToggleRow({ label, desc, checked, onChange }: ToggleRowProps) {
         onCheckedChange={onChange}
         className={cn(
           "relative h-5 w-9 rounded-full transition-colors",
-          "data-[state=checked]:bg-red-500 data-[state=unchecked]:bg-zinc-300 dark:data-[state=unchecked]:bg-zinc-600"
+          "data-[state=checked]:bg-blue-500 data-[state=unchecked]:bg-slate-300 dark:data-[state=unchecked]:bg-slate-600"
         )}
       >
         <Switch.Thumb
@@ -95,10 +95,10 @@ function SliderRow({
   onChange,
 }: SliderRowProps) {
   return (
-    <div className="py-2 border-b border-zinc-100 dark:border-zinc-800 last:border-0">
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-[0.7rem] sm:text-xs text-zinc-700 dark:text-zinc-300">{label}</span>
-        <span className="text-[0.7rem] sm:text-xs text-zinc-500 tabular-nums">
+    <div className="py-3 border-b border-slate-100 dark:border-white/5 last:border-0">
+      <div className="flex items-center justify-between mb-2.5">
+        <span className="text-sm text-slate-700 dark:text-slate-300">{label}</span>
+        <span className="text-sm text-slate-500 tabular-nums">
           {formatValue ? formatValue(value) : value}
         </span>
       </div>
@@ -110,10 +110,10 @@ function SliderRow({
         onValueChange={([v]) => onChange(v)}
         className="relative flex items-center h-5 w-full"
       >
-        <Slider.Track className="relative h-1.5 w-full rounded-full bg-zinc-200 dark:bg-zinc-700">
-          <Slider.Range className="absolute h-full rounded-full bg-red-500" />
+        <Slider.Track className="relative h-1.5 w-full rounded-full bg-slate-200 dark:bg-slate-700">
+          <Slider.Range className="absolute h-full rounded-full bg-blue-500" />
         </Slider.Track>
-        <Slider.Thumb className="block h-4 w-4 rounded-full bg-white border border-zinc-300 dark:border-zinc-600 shadow-sm hover:border-red-400 focus:outline-none transition-colors" />
+        <Slider.Thumb className="block h-4 w-4 rounded-full bg-white border border-slate-300 dark:border-slate-600 shadow-sm hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-colors" />
       </Slider.Root>
     </div>
   );
@@ -276,9 +276,9 @@ export function SettingsPanel() {
   }, []);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 animate-fade-in">
       {/* 显示设置 */}
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4">
+      <div className="card p-5">
         <SectionTitle title="显示设置" desc="控制列表中的数据展示项" />
         <ToggleRow
           label="持仓金额"
@@ -308,15 +308,15 @@ export function SettingsPanel() {
       </div>
 
       {/* 主题设置 */}
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4">
+      <div className="card p-5">
         <SectionTitle title="主题" desc="切换外观主题与字体" />
         <ToggleRow
           label={
-            <span className="inline-flex items-center gap-1.5">
+            <span className="inline-flex items-center gap-2">
               {store.darkMode ? (
-                <Moon className="w-3 h-3" />
+                <Moon className="w-3.5 h-3.5" />
               ) : (
-                <Sun className="w-3 h-3" />
+                <Sun className="w-3.5 h-3.5" />
               )}
               深色模式
             </span>
@@ -333,7 +333,7 @@ export function SettingsPanel() {
       </div>
 
       {/* 外观设置 */}
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4">
+      <div className="card p-5">
         <SectionTitle title="外观" desc="调整灰度与透明度" />
         <SliderRow
           label="灰度"
@@ -354,9 +354,9 @@ export function SettingsPanel() {
       </div>
 
       {/* 导入导出 */}
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4">
+      <div className="card p-5">
         <SectionTitle title="导入/导出" desc="备份或恢复您的基金数据" />
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-3">
           <input
             ref={jsonInputRef}
             type="file"
@@ -366,16 +366,16 @@ export function SettingsPanel() {
           />
           <button
             onClick={() => jsonInputRef.current?.click()}
-            className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg border border-zinc-200 dark:border-zinc-700 text-[0.7rem] sm:text-xs text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+            className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg border border-slate-200 dark:border-white/10 text-sm text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
           >
-            <Upload className="w-3 h-3" />
+            <Upload className="w-3.5 h-3.5" />
             导入 JSON
           </button>
           <button
             onClick={handleJsonExport}
-            className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg border border-zinc-200 dark:border-zinc-700 text-[0.7rem] sm:text-xs text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+            className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg border border-slate-200 dark:border-white/10 text-sm text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
           >
-            <Download className="w-3 h-3" />
+            <Download className="w-3.5 h-3.5" />
             导出 JSON
           </button>
           <input
@@ -387,59 +387,59 @@ export function SettingsPanel() {
           />
           <button
             onClick={() => excelInputRef.current?.click()}
-            className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg border border-zinc-200 dark:border-zinc-700 text-[0.7rem] sm:text-xs text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+            className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg border border-slate-200 dark:border-white/10 text-sm text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
           >
-            <Upload className="w-3 h-3" />
+            <Upload className="w-3.5 h-3.5" />
             导入 Excel
           </button>
           <button
             onClick={handleExcelExport}
-            className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg border border-zinc-200 dark:border-zinc-700 text-[0.7rem] sm:text-xs text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+            className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg border border-slate-200 dark:border-white/10 text-sm text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
           >
-            <Download className="w-3 h-3" />
+            <Download className="w-3.5 h-3.5" />
             导出 Excel
           </button>
         </div>
       </div>
 
       {/* 节假日更新 */}
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4">
+      <div className="card p-5">
         <SectionTitle
           title="节假日数据"
           desc="手动拉取最新节假日数据以更新交易日历"
         />
         <button
           onClick={handleUpdateHoliday}
-          className="flex items-center gap-1.5 py-2 px-4 rounded-lg bg-red-500 text-white text-[0.7rem] sm:text-xs font-medium hover:bg-red-600 transition-colors"
+          className="inline-flex items-center gap-2 py-2 px-4 rounded-lg bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors shadow-sm shadow-blue-500/20"
         >
-          <RotateCw className="w-3 h-3" />
+          <RotateCw className="w-3.5 h-3.5" />
           更新节假日数据
         </button>
       </div>
 
       {/* 关于 */}
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4">
+      <div className="card p-5">
         <SectionTitle title="关于" />
-        <div className="space-y-1.5">
-          <p className="text-[0.7rem] sm:text-xs text-zinc-500 dark:text-zinc-400">
+        <div className="space-y-2">
+          <p className="text-sm text-slate-500 dark:text-slate-400">
             版本：v{VERSION}
           </p>
-          <p className="text-[0.7rem] sm:text-xs">
+          <p className="text-sm">
             <a
               href="https://github.com/x2rr/funds/blob/main/CHANGELOG.md"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-red-500 hover:underline"
+              className="text-blue-500 hover:underline"
             >
               更新日志
             </a>
           </p>
-          <p className="text-xs">
+          <p className="text-sm">
             <a
               href="https://github.com/x2rr/funds"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-red-500 hover:underline"
+              className="text-blue-500 hover:underline"
             >
               GitHub
             </a>

@@ -4,7 +4,8 @@ import { useFundStore } from "@/stores/fund-store";
 import { useSettingsStore } from "@/stores/settings-store";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Trash2, Star, GripVertical, ArrowUpDown } from "lucide-react";
+import { Trash2, Star, GripVertical, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface Props {
   isEdit: boolean;
@@ -24,7 +25,7 @@ const SORT_FIELDS = [
 function gainColor(value: number): string {
   if (value > 0) return "color-up";
   if (value < 0) return "color-down";
-  return "";
+  return "text-slate-600 dark:text-slate-400";
 }
 
 function formatNum(value: number | null | undefined, decimals = 2): string {
@@ -36,6 +37,12 @@ function formatPercent(value: number | null | undefined): string {
   if (value == null) return "--";
   const sign = value > 0 ? "+" : "";
   return `${sign}${value.toFixed(2)}%`;
+}
+
+function SortIcon({ field, currentSort, direction }: { field: string; currentSort: string | null; direction: string }) {
+  if (field !== currentSort) return <ArrowUpDown size={12} className="text-slate-300 dark:text-slate-600" />;
+  if (direction === "asc") return <ArrowUp size={12} className="text-blue-500" />;
+  return <ArrowDown size={12} className="text-blue-500" />;
 }
 
 export function FundTable({ isEdit, onRefresh }: Props) {
@@ -118,77 +125,73 @@ export function FundTable({ isEdit, onRefresh }: Props) {
 
   if (sorted.length === 0) {
     return (
-      <div className="text-center py-8 text-[0.75rem] sm:text-xs text-gray-400 dark:text-text-dark">
+      <div className="text-center py-12 text-sm text-slate-400 dark:text-slate-500">
         暂无基金数据
       </div>
     );
   }
 
+  const thClass = "px-3 py-2.5 text-right font-medium text-[0.72rem] text-slate-400 dark:text-slate-500 uppercase tracking-wider";
+  const thSortClass = "px-3 py-2.5 text-right font-medium text-[0.72rem] text-slate-400 dark:text-slate-500 uppercase tracking-wider cursor-pointer select-none hover:text-slate-600 dark:hover:text-slate-300 transition-colors";
+  const tdClass = "px-3 py-2.5 font-mono text-[0.78rem] tnum";
+  const tdRightClass = "px-3 py-2.5 font-mono text-[0.78rem] tnum";
+
   return (
     <div className="overflow-x-auto">
-      <table className="w-full border-collapse text-[0.65rem] sm:text-[0.7rem]">
+      <table className="table-base">
         <thead>
-          <tr className="border-b border-gray-200 dark:border-border-dark sticky top-0 bg-white dark:bg-bg-dark z-10">
-            {isEdit && <th className="px-1 py-2 w-6" />}
-            <th className="px-1 py-2 text-left font-medium text-gray-500 dark:text-text-dark">
+          <tr>
+            {isEdit && <th className="px-2 py-2.5 w-8" />}
+            <th className="px-3 py-2.5 text-left font-medium text-[0.72rem] text-slate-400 dark:text-slate-500 uppercase tracking-wider">
               基金名称
             </th>
             {isEdit && (
-              <th className="px-1 py-2 text-left font-medium text-gray-500 dark:text-text-dark">
+              <th className="px-3 py-2.5 text-left font-medium text-[0.72rem] text-slate-400 dark:text-slate-500 uppercase tracking-wider">
                 代码
               </th>
             )}
             {showGSZ && (
-              <th className="px-1 py-2 text-right font-medium text-gray-500 dark:text-text-dark">
+              <th className={thClass}>
                 估算净值
               </th>
             )}
             {showAmount && (
-              <th
-                className="px-1 py-2 text-right font-medium text-gray-500 dark:text-text-dark cursor-pointer select-none"
-                onClick={() => setSort("amount")}
-              >
-                <span className="inline-flex items-center gap-0.5">
+              <th className={thSortClass} onClick={() => setSort("amount")}>
+                <span className="inline-flex items-center gap-1">
                   金额
-                  <ArrowUpDown size={10} />
+                  <SortIcon field="amount" currentSort={sortType} direction={sortDirection} />
                 </span>
               </th>
             )}
             {showCost && (
-              <th className="px-1 py-2 text-right font-medium text-gray-500 dark:text-text-dark">
+              <th className={thClass}>
                 成本
               </th>
             )}
             {showCostRate && (
-              <th className="px-1 py-2 text-right font-medium text-gray-500 dark:text-text-dark">
+              <th className={thClass}>
                 成本率
               </th>
             )}
-            <th
-              className="px-1 py-2 text-right font-medium text-gray-500 dark:text-text-dark cursor-pointer select-none"
-              onClick={() => setSort("gszzl")}
-            >
-              <span className="inline-flex items-center gap-0.5">
+            <th className={thSortClass} onClick={() => setSort("gszzl")}>
+              <span className="inline-flex items-center gap-1">
                 GSZZL
-                <ArrowUpDown size={10} />
+                <SortIcon field="gszzl" currentSort={sortType} direction={sortDirection} />
               </span>
             </th>
             {showGains && (
-              <th
-                className="px-1 py-2 text-right font-medium text-gray-500 dark:text-text-dark cursor-pointer select-none"
-                onClick={() => setSort("gains")}
-              >
-                <span className="inline-flex items-center gap-0.5">
+              <th className={thSortClass} onClick={() => setSort("gains")}>
+                <span className="inline-flex items-center gap-1">
                   收益
-                  <ArrowUpDown size={10} />
+                  <SortIcon field="gains" currentSort={sortType} direction={sortDirection} />
                 </span>
               </th>
             )}
-            <th className="px-1 py-2 text-right font-medium text-gray-500 dark:text-text-dark">
+            <th className={thClass}>
               更新时间
             </th>
-            {isEdit && <th className="px-1 py-2 w-6" />}
-            {isEdit && <th className="px-1 py-2 w-6" />}
+            {isEdit && <th className="px-2 py-2.5 w-8" />}
+            {isEdit && <th className="px-2 py-2.5 w-8" />}
           </tr>
         </thead>
         <tbody>
@@ -203,88 +206,85 @@ export function FundTable({ isEdit, onRefresh }: Props) {
             return (
               <tr
                 key={code}
-                className="table-row-hover border-b border-gray-100 dark:border-white/5"
+                className="table-row-hover group transition-colors"
               >
                 {isEdit && (
-                  <td className="px-1 py-1.5">
-                    <GripVertical size={12} className="text-gray-300 dark:text-text-dark cursor-grab" />
+                  <td className="px-2 py-2.5">
+                    <GripVertical size={14} className="text-slate-300 dark:text-slate-600 cursor-grab group-hover:text-slate-400 dark:group-hover:text-slate-500" />
                   </td>
                 )}
-                <td className="px-1 py-1.5 max-w-[140px] truncate">
+                <td className="px-3 py-2.5 max-w-[160px] truncate text-[0.82rem]">
                   {isEdit ? (
-                    <span className="text-gray-700 dark:text-text-dark">
+                    <span className="text-slate-700 dark:text-slate-300">
                       {item.name}
                     </span>
                   ) : (
                     <Link
                       href={`/fund/${code}`}
-                      className="text-primary hover:underline"
+                      className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
                     >
                       {item.name}
                     </Link>
                   )}
                 </td>
                 {isEdit && (
-                  <td className="px-1 py-1.5 text-gray-500 dark:text-text-dark font-mono">
+                  <td className="px-3 py-2.5 font-mono text-[0.72rem] text-slate-400 dark:text-slate-500">
                     {code}
                   </td>
                 )}
                 {showGSZ && (
-                  <td className="px-1 py-1.5 text-right font-mono text-gray-700 dark:text-text-dark">
+                  <td className={`${tdRightClass} text-slate-600 dark:text-slate-300`}>
                     {formatNum(item.gsz, 4)}
                   </td>
                 )}
                 {showAmount && (
-                  <td className="px-1 py-1.5 text-right font-mono whitespace-nowrap">
+                  <td className={tdRightClass}>
                     {formatNum(item.amount)}
                   </td>
                 )}
                 {showCost && (
-                  <td className="px-1 py-1.5 text-right font-mono text-gray-500 dark:text-text-dark">
+                  <td className={`${tdRightClass} text-slate-500 dark:text-slate-400`}>
                     {formatNum(item.cost)}
                   </td>
                 )}
                 {showCostRate && (
-                  <td className="px-1 py-1.5 text-right font-mono text-gray-500 dark:text-text-dark">
+                  <td className={`${tdRightClass} text-slate-500 dark:text-slate-400`}>
                     {formatPercent(item.costGainsRate)}
                   </td>
                 )}
-                <td
-                  className={`px-1 py-1.5 text-right font-mono whitespace-nowrap ${gszzlColor}`}
-                >
+                <td className={cn("px-3 py-2.5 font-mono text-[0.82rem] font-semibold tnum", gszzlColor)}>
                   {formatPercent(item.gszzl)}
                 </td>
                 {showGains && (
-                  <td
-                    className={`px-1 py-1.5 text-right font-mono whitespace-nowrap ${gainsColor}`}
-                  >
+                  <td className={cn("px-3 py-2.5 font-mono text-[0.82rem] font-semibold tnum", gainsColor)}>
                     {formatNum(item.gains)}
                   </td>
                 )}
-                <td className="px-1 py-1.5 text-right text-gray-400 dark:text-text-dark font-mono text-[10px] whitespace-nowrap">
+                <td className="px-3 py-2.5 text-[0.7rem] text-slate-400 dark:text-slate-500 font-mono tnum">
                   {item.gztime || "--"}
                 </td>
                 {isEdit && (
-                  <td className="px-1 py-1.5">
+                  <td className="px-2 py-2.5">
                     <button
                       onClick={() => handleToggleFocus(code)}
-                      className={`hover:text-yellow-400 ${
-                        isFocused ? "text-yellow-400" : "text-gray-300 dark:text-text-dark"
-                      }`}
+                      className={cn(
+                        "transition-colors",
+                        isFocused ? "text-amber-400" : "text-slate-300 dark:text-slate-600 hover:text-amber-400"
+                      )}
                       title="关注"
                     >
-                      <Star size={12} />
+                      <Star size={14} />
                     </button>
                   </td>
                 )}
                 {isEdit && (
-                  <td className="px-1 py-1.5">
+                  <td className="px-2 py-2.5">
                     <button
                       onClick={() => handleDelete(code)}
-                      className="text-gray-300 dark:text-text-dark hover:text-red-500"
+                      className="text-slate-300 dark:text-slate-600 hover:text-red-500 transition-colors"
                       title="删除"
                     >
-                      <Trash2 size={12} />
+                      <Trash2 size={14} />
                     </button>
                   </td>
                 )}
@@ -294,8 +294,8 @@ export function FundTable({ isEdit, onRefresh }: Props) {
         </tbody>
       </table>
       {isEdit && (
-        <div className="mt-3 space-y-2 border-t border-gray-200 dark:border-border-dark pt-3">
-          <p className="text-[0.65rem] sm:text-[0.7rem] text-gray-500 dark:text-text-dark mb-2">编辑份额与成本</p>
+        <div className="mt-4 space-y-2.5 border-t border-slate-100 dark:border-white/5 pt-4">
+          <p className="text-[0.72rem] text-slate-400 dark:text-slate-500 mb-3 font-medium">编辑份额与成本</p>
           {sorted.map((item) => {
             const code = item.fundcode;
             const fundItem = fundList.find((f) => f.code === code);
@@ -307,9 +307,9 @@ export function FundTable({ isEdit, onRefresh }: Props) {
             return (
               <div
                 key={code}
-                className="flex items-center gap-2 text-[0.65rem] sm:text-[0.7rem]"
+                className="flex items-center gap-3 text-[0.78rem]"
               >
-                <span className="w-[120px] truncate text-gray-700 dark:text-text-dark">
+                <span className="w-[140px] truncate text-slate-600 dark:text-slate-300">
                   {item.name}
                 </span>
                 <input
@@ -324,7 +324,7 @@ export function FundTable({ isEdit, onRefresh }: Props) {
                     }));
                     debouncedUpdate(code, "shares", e.target.value);
                   }}
-                  className="w-20 px-2 py-1 border border-gray-200 dark:border-border-dark rounded text-[0.65rem] sm:text-[0.7rem] bg-white dark:bg-gray-800 text-gray-700 dark:text-text-dark"
+                  className="w-24 px-3 py-1.5 border border-slate-200 dark:border-white/10 rounded-lg text-[0.78rem] bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-shadow"
                 />
                 <input
                   type="number"
@@ -338,7 +338,7 @@ export function FundTable({ isEdit, onRefresh }: Props) {
                     }));
                     debouncedUpdate(code, "cost", e.target.value);
                   }}
-                  className="w-20 px-2 py-1 border border-gray-200 dark:border-border-dark rounded text-[0.65rem] sm:text-[0.7rem] bg-white dark:bg-gray-800 text-gray-700 dark:text-text-dark"
+                  className="w-24 px-3 py-1.5 border border-slate-200 dark:border-white/10 rounded-lg text-[0.78rem] bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-shadow"
                 />
               </div>
             );

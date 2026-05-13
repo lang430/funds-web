@@ -28,14 +28,14 @@ function formatSyl(val: string): string {
 
 function sylColor(val: string): string {
   const n = parseFloat(val);
-  if (isNaN(n)) return "text-zinc-500";
-  return n > 0 ? "text-red-500" : n < 0 ? "text-green-500" : "text-zinc-500";
+  if (isNaN(n)) return "text-slate-400 dark:text-slate-500";
+  return n > 0 ? "text-red-500" : n < 0 ? "text-green-500" : "text-slate-400 dark:text-slate-500";
 }
 
 export function FundInfoCard({ data, darkMode: _darkMode }: Props) {
   if (!data?.FCODE) {
     return (
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 p-4 sm:p-6 text-center text-[0.7rem] sm:text-xs text-zinc-400">
+      <div className="card p-6 text-center text-sm text-slate-400 dark:text-slate-500">
         暂无基金信息
       </div>
     );
@@ -46,73 +46,73 @@ export function FundInfoCard({ data, darkMode: _darkMode }: Props) {
   const scale = parseFloat(data.ENDNAV);
 
   return (
-    <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-3">
-      <div className="flex items-start justify-between gap-2">
+    <div className="card p-5 space-y-4 animate-fade-in">
+      <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <h1 className="text-[0.85rem] sm:text-sm font-semibold truncate">{data.SHORTNAME}</h1>
-          <p className="text-[0.7rem] sm:text-xs text-zinc-400 mt-0.5">
+          <h1 className="text-base font-semibold truncate">{data.SHORTNAME}</h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
             {data.FCODE} · {data.FTYPE}
           </p>
         </div>
         <span
-          className={`shrink-0 text-[0.7rem] sm:text-xs px-2 py-0.5 rounded-full border ${
+          className={`shrink-0 text-xs px-2.5 py-1 rounded-full border font-medium ${
             data.SGZT === "开放申购"
-              ? "border-green-300 text-green-600 dark:border-green-700 dark:text-green-400"
-              : "border-zinc-300 text-zinc-500 dark:border-zinc-600 dark:text-zinc-400"
+              ? "border-green-200 text-green-600 dark:border-green-800 dark:text-green-400 bg-green-50 dark:bg-green-950/30"
+              : "border-slate-200 text-slate-500 dark:border-slate-700 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/50"
           }`}
         >
           {data.SGZT}
         </span>
       </div>
 
-      <div className="grid grid-cols-2 gap-y-1.5 gap-x-4 text-[0.7rem] sm:text-xs">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-3 text-sm">
         <div>
-          <span className="text-zinc-400">基金公司</span>
-          <p className="text-zinc-800 dark:text-zinc-200">{data.JJGS}</p>
+          <span className="text-slate-400 dark:text-slate-500 text-xs">基金公司</span>
+          <p className="text-slate-800 dark:text-slate-200 mt-0.5 font-medium">{data.JJGS}</p>
         </div>
         <div>
-          <span className="text-zinc-400">基金经理</span>
-          <p className="text-zinc-800 dark:text-zinc-200 cursor-pointer hover:underline">
+          <span className="text-slate-400 dark:text-slate-500 text-xs">基金经理</span>
+          <p className="text-slate-800 dark:text-slate-200 mt-0.5 font-medium hover:underline cursor-pointer">
             {data.JJJL}
           </p>
         </div>
         <div>
-          <span className="text-zinc-400">单位净值</span>
-          <p className="text-zinc-800 dark:text-zinc-200 font-mono">
+          <span className="text-slate-400 dark:text-slate-500 text-xs">单位净值</span>
+          <p className="text-slate-800 dark:text-slate-200 mt-0.5 font-mono font-medium">
             {isNaN(nav) ? "--" : nav.toFixed(4)}
           </p>
         </div>
         <div>
-          <span className="text-zinc-400">累计净值</span>
-          <p className="text-zinc-800 dark:text-zinc-200 font-mono">
+          <span className="text-slate-400 dark:text-slate-500 text-xs">累计净值</span>
+          <p className="text-slate-800 dark:text-slate-200 mt-0.5 font-mono font-medium">
             {isNaN(accNav) ? "--" : accNav.toFixed(4)}
           </p>
         </div>
         <div>
-          <span className="text-zinc-400">基金规模</span>
-          <p className="text-zinc-800 dark:text-zinc-200 font-mono">
+          <span className="text-slate-400 dark:text-slate-500 text-xs">基金规模</span>
+          <p className="text-slate-800 dark:text-slate-200 mt-0.5 font-mono font-medium">
             {isNaN(scale) || scale <= 0
               ? "--"
               : `${(scale / 100_000_000).toFixed(2)}亿`}
           </p>
         </div>
         <div>
-          <span className="text-zinc-400">成立日期</span>
-          <p className="text-zinc-800 dark:text-zinc-200">{data.FSRQ || "--"}</p>
+          <span className="text-slate-400 dark:text-slate-500 text-xs">成立日期</span>
+          <p className="text-slate-800 dark:text-slate-200 mt-0.5 font-medium">{data.FSRQ || "--"}</p>
         </div>
       </div>
 
-      <div className="border-t border-zinc-100 dark:border-zinc-800 pt-2">
-        <div className="grid grid-cols-4 gap-2">
+      <div className="border-t border-slate-100 dark:border-white/5 pt-4">
+        <div className="grid grid-cols-4 gap-3">
           {RANK_LABELS.map(({ key, label, sylKey }) => (
             <div key={key} className="text-center">
-              <p className="text-[0.7rem] sm:text-xs text-zinc-400">{label}</p>
-              <p className={`text-[0.75rem] sm:text-xs font-semibold ${sylColor(data[sylKey])}`}>
+              <p className="text-xs text-slate-400 dark:text-slate-500 mb-1">{label}</p>
+              <p className={`text-sm font-semibold ${sylColor(data[sylKey])}`}>
                 {formatSyl(data[sylKey])}
               </p>
-              <p className="text-[0.7rem] sm:text-xs text-zinc-400 mt-0.5">
+              <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">
                 {formatRank(data[key])}
-                <span className="text-[0.6rem] sm:text-[10px]">名</span>
+                <span className="text-[0.65rem]">名</span>
               </p>
             </div>
           ))}

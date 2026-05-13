@@ -2,6 +2,7 @@
 
 import { useFundStore } from "@/stores/fund-store";
 import { useSettingsStore } from "@/stores/settings-store";
+import { TrendingUp, TrendingDown, Minus } from "lucide-react";
 
 export function GainsBar() {
   const { valuations } = useFundStore();
@@ -22,43 +23,56 @@ export function GainsBar() {
   const gainsRate = totalAmount > 0 ? (totalGains / totalAmount) * 100 : 0;
   const costGainsRate = totalAmount > 0 ? (totalCostGains / totalAmount) * 100 : 0;
 
-  const gainsColor = totalGains > 0 ? "color-up" : totalGains < 0 ? "color-down" : "text-zinc-500";
-  const costColor = totalCostGains > 0 ? "color-up" : totalCostGains < 0 ? "color-down" : "text-zinc-500";
+  const gainsTrend = totalGains > 0 ? "up" : totalGains < 0 ? "down" : "flat";
+  const costTrend = totalCostGains > 0 ? "up" : totalCostGains < 0 ? "down" : "flat";
+
+  const TrendIcon = ({ trend }: { trend: string }) => {
+    if (trend === "up") return <TrendingUp size={14} className="text-red-500" />;
+    if (trend === "down") return <TrendingDown size={14} className="text-green-500" />;
+    return <Minus size={14} className="text-slate-400" />;
+  };
+
+  const gainsColor = totalGains > 0 ? "color-up" : totalGains < 0 ? "color-down" : "text-slate-500 dark:text-slate-400";
+  const costColor = totalCostGains > 0 ? "color-up" : totalCostGains < 0 ? "color-down" : "text-slate-500 dark:text-slate-400";
 
   return (
-    <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
-      <div className="px-4 py-2.5 border-b border-zinc-100 dark:border-zinc-800">
-        <h2 className="text-[0.75rem] sm:text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-          收益情况
-        </h2>
+    <div className="card overflow-hidden">
+      <div className="card-header">
+        <h2>收益情况</h2>
       </div>
-      <div className="p-4">
-        <div className="flex flex-wrap gap-4 sm:gap-6">
+      <div className="p-5">
+        <div className="grid grid-cols-3 gap-4">
           {showGains && (
-            <div className="min-w-[140px]">
-              <p className="text-[0.65rem] text-zinc-400 dark:text-zinc-500 mb-1">今日收益</p>
-              <p className={`text-sm sm:text-base font-bold font-mono ${gainsColor}`}>
+            <div>
+              <div className="flex items-center gap-1 mb-1.5">
+                <span className="text-[0.7rem] text-slate-400 dark:text-slate-500">今日收益</span>
+                <TrendIcon trend={gainsTrend} />
+              </div>
+              <p className={`text-base font-bold font-mono tnum ${gainsColor}`}>
                 {totalGains > 0 ? "+" : ""}{totalGains.toFixed(2)}
               </p>
-              <p className={`text-[0.7rem] font-mono mt-0.5 ${gainsColor}`}>
+              <p className={`text-[0.75rem] font-mono mt-0.5 tnum ${gainsColor}`}>
                 {totalGains > 0 ? "+" : ""}{gainsRate.toFixed(2)}%
               </p>
             </div>
           )}
           {showCost && (
-            <div className="min-w-[140px]">
-              <p className="text-[0.65rem] text-zinc-400 dark:text-zinc-500 mb-1">持有收益</p>
-              <p className={`text-sm sm:text-base font-bold font-mono ${costColor}`}>
+            <div>
+              <div className="flex items-center gap-1 mb-1.5">
+                <span className="text-[0.7rem] text-slate-400 dark:text-slate-500">持有收益</span>
+                <TrendIcon trend={costTrend} />
+              </div>
+              <p className={`text-base font-bold font-mono tnum ${costColor}`}>
                 {totalCostGains > 0 ? "+" : ""}{totalCostGains.toFixed(2)}
               </p>
-              <p className={`text-[0.7rem] font-mono mt-0.5 ${costColor}`}>
+              <p className={`text-[0.75rem] font-mono mt-0.5 tnum ${costColor}`}>
                 {totalCostGains > 0 ? "+" : ""}{costGainsRate.toFixed(2)}%
               </p>
             </div>
           )}
-          <div className="min-w-[120px]">
-            <p className="text-[0.65rem] text-zinc-400 dark:text-zinc-500 mb-1">持有金额</p>
-            <p className="text-sm sm:text-base font-bold font-mono text-zinc-700 dark:text-zinc-300">
+          <div>
+            <span className="text-[0.7rem] text-slate-400 dark:text-slate-500 mb-1.5 block">持有金额</span>
+            <p className="text-base font-bold font-mono tnum text-slate-700 dark:text-slate-200">
               {totalAmount.toFixed(2)}
             </p>
           </div>

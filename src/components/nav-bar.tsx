@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useAuthStore } from "@/stores/auth-store";
-import { LogOut, Settings, TrendingUp } from "lucide-react";
+import { LogOut, Settings, TrendingUp, BarChart3 } from "lucide-react";
 
 export function NavBar() {
   const router = useRouter();
@@ -15,52 +15,58 @@ export function NavBar() {
   };
 
   return (
-    <header className="sticky top-0 z-20 border-b border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md">
-      <div className="w-full flex items-center justify-between px-4 sm:px-6 py-2.5">
-        <div className="flex items-center gap-3 sm:gap-4">
-          <h1 className="text-sm sm:text-base font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
-            自选基金助手
-          </h1>
-          <div className="flex items-center gap-1">
+    <header className="sticky top-0 z-30 glass-nav border-b border-slate-200/60 dark:border-white/5">
+      <div className="max-w-[1400px] mx-auto flex items-center justify-between px-5 sm:px-8 py-0 h-12">
+        <div className="flex items-center gap-5">
+          <button
+            onClick={() => router.push("/")}
+            className="flex items-center gap-2.5 hover:opacity-80 transition-opacity"
+          >
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-sm">
+              <BarChart3 size={15} className="text-white" strokeWidth={2.5} />
+            </div>
+            <span className="text-sm font-semibold tracking-tight text-slate-800 dark:text-slate-200">
+              自选基金助手
+            </span>
+          </button>
+
+          <div className="flex items-center gap-0.5">
             <button
               onClick={() => router.push("/market")}
-              className="inline-flex items-center gap-1 text-[0.7rem] sm:text-xs px-2 py-1 rounded-md text-zinc-500 hover:text-zinc-700 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-zinc-200 dark:hover:bg-zinc-800/50 transition-colors"
+              className="btn btn-ghost text-xs"
             >
-              <TrendingUp size={13} />
+              <TrendingUp size={14} />
               <span className="hidden sm:inline">行情中心</span>
             </button>
             <button
               onClick={() => router.push("/settings")}
-              className="inline-flex items-center gap-1 text-[0.7rem] sm:text-xs px-2 py-1 rounded-md text-zinc-500 hover:text-zinc-700 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-zinc-200 dark:hover:bg-zinc-800/50 transition-colors"
+              className="btn btn-ghost text-xs"
             >
-              <Settings size={13} />
+              <Settings size={14} />
               <span className="hidden sm:inline">设置</span>
             </button>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-3">
           {user && (
-            <div className="flex items-center gap-1.5 sm:gap-2">
+            <div className="flex items-center gap-2">
               {user.avatar_url && (
                 <Image
                   src={user.avatar_url}
                   alt={user.login}
-                  width={22}
-                  height={22}
-                  className="rounded-full ring-1 ring-zinc-200 dark:ring-zinc-700"
+                  width={24}
+                  height={24}
+                  className="rounded-full ring-1 ring-slate-200/80 dark:ring-white/10"
                 />
               )}
-              <span className="hidden sm:inline text-[0.7rem] text-zinc-500 dark:text-zinc-400 max-w-[120px] truncate">
+              <span className="hidden sm:inline text-xs text-slate-500 dark:text-slate-400 max-w-[120px] truncate">
                 {user.name || user.login}
               </span>
             </div>
           )}
-          <button
-            onClick={handleLogout}
-            className="inline-flex items-center gap-1 text-[0.7rem] px-2 py-1 rounded-md text-zinc-500 hover:text-red-600 dark:text-zinc-400 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
-          >
-            <LogOut size={13} />
+          <button onClick={handleLogout} className="btn btn-ghost text-xs hover:text-red-500 dark:hover:text-red-400">
+            <LogOut size={14} />
             <span className="hidden sm:inline">退出</span>
           </button>
         </div>

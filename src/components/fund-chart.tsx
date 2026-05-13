@@ -65,74 +65,79 @@ export function FundChart({ data, type: _type, range, onRangeChange, darkMode }:
     chartData[chartData.length - 1].value >= chartData[0].value;
 
   const lineColor = trendPositive ? "#ef4444" : "#22c55e";
-  const axisColor = darkMode ? "#71717a" : "#a1a1aa";
+  const axisColor = darkMode ? "#64748b" : "#94a3b8";
 
   if (chartData.length === 0) {
     return (
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4">
-        <p className="text-[0.7rem] sm:text-xs text-zinc-400 text-center py-8">暂无走势数据</p>
+      <div className="card p-5">
+        <p className="text-sm text-slate-400 dark:text-slate-500 text-center py-10">暂无走势数据</p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4">
-      <div className="flex items-center gap-1 mb-3">
-        {RANGE_OPTIONS.map((opt) => (
-          <button
-            key={opt.value}
-            onClick={() => onRangeChange(opt.value)}
-            className={`text-xs px-2.5 py-1 rounded-md transition-colors ${
-              range === opt.value
-                ? "bg-red-500 text-white"
-                : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-            }`}
-          >
-            {opt.label}
-          </button>
-        ))}
+    <div className="card overflow-hidden">
+      <div className="card-header">
+        <div className="flex items-center gap-1">
+          {RANGE_OPTIONS.map((opt) => (
+            <button
+              key={opt.value}
+              onClick={() => onRangeChange(opt.value)}
+              className={`text-xs px-3 py-1.5 rounded-md transition-all duration-150 ${
+                range === opt.value
+                  ? "bg-blue-500 text-white shadow-sm shadow-blue-500/25"
+                  : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/5"
+              }`}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
       </div>
-
-      <ResponsiveContainer width="100%" height={240}>
-        <LineChart data={chartData} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke={darkMode ? "#27272a" : "#e4e4e7"} />
-          <XAxis
-            dataKey="date"
-            tick={{ fontSize: 10, fill: axisColor }}
-            tickFormatter={formatDate}
-            axisLine={false}
-            tickLine={false}
-            interval="preserveStartEnd"
-          />
-          <YAxis
-            domain={["auto", "auto"]}
-            tick={{ fontSize: 10, fill: axisColor }}
-            tickFormatter={(v: number) => v.toFixed(4)}
-            axisLine={false}
-            tickLine={false}
-            width={60}
-          />
-          <Tooltip
-            contentStyle={{
-              backgroundColor: darkMode ? "#18181b" : "#fff",
-              border: `1px solid ${darkMode ? "#3f3f46" : "#e4e4e7"}`,
-              borderRadius: "8px",
-              fontSize: "12px",
-              color: darkMode ? "#e4e4e7" : "#18181b",
-            }}
-            labelFormatter={(label) => formatDate(label as string)}
-            formatter={(value) => [Number(value).toFixed(4), "净值"]}
-          />
-          <Line
-            type="monotone"
-            dataKey="value"
-            stroke={lineColor}
-            strokeWidth={1.5}
-            dot={false}
-            isAnimationActive={false}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+      <div className="p-4">
+        <ResponsiveContainer width="100%" height={280}>
+          <LineChart data={chartData} margin={{ top: 8, right: 16, left: 0, bottom: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke={darkMode ? "#1e293b" : "#e2e8f0"} strokeOpacity={0.5} />
+            <XAxis
+              dataKey="date"
+              tick={{ fontSize: 11, fill: axisColor }}
+              tickFormatter={formatDate}
+              axisLine={false}
+              tickLine={false}
+              interval="preserveStartEnd"
+            />
+            <YAxis
+              domain={["auto", "auto"]}
+              tick={{ fontSize: 11, fill: axisColor }}
+              tickFormatter={(v: number) => v.toFixed(4)}
+              axisLine={false}
+              tickLine={false}
+              width={65}
+            />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: darkMode ? "#1e293b" : "#fff",
+                border: `1px solid ${darkMode ? "#334155" : "#e2e8f0"}`,
+                borderRadius: "10px",
+                fontSize: "12px",
+                color: darkMode ? "#e2e8f0" : "#1e293b",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+              }}
+              labelFormatter={(label) => formatDate(label as string)}
+              formatter={(value) => [Number(value).toFixed(4), "净值"]}
+            />
+            <Line
+              type="monotone"
+              dataKey="value"
+              stroke={lineColor}
+              strokeWidth={2}
+              dot={false}
+              isAnimationActive={false}
+              activeDot={{ r: 4, strokeWidth: 0 }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 }

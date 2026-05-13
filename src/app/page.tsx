@@ -96,37 +96,44 @@ export default function HomePage() {
   const handleToggleLiveUpdate = useCallback(() => setIsLiveUpdate(!isLiveUpdate), [isLiveUpdate, setIsLiveUpdate]);
 
   return (
-    <div className={`min-h-screen bg-zinc-50 dark:bg-zinc-950 ${darkMode ? "dark" : ""}`}>
+    <div className={`min-h-screen bg-slate-50 dark:bg-[#0a0a0b] ${darkMode ? "dark" : ""}`}>
       <NavBar />
-      <main className={`w-full px-3 sm:px-5 py-3 sm:py-4 font-sans ${normalFont ? "text-[0.95rem]" : "text-[0.8rem] sm:text-[0.85rem]"}`}>
+      <main className={`max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6 ${normalFont ? "normal-font" : ""}`}>
         {loading && valuations.length === 0 ? (
-          <div className="flex items-center justify-center py-24">
-            <div className="flex flex-col items-center gap-3">
-              <div className="w-6 h-6 border-2 border-zinc-300 dark:border-zinc-600 border-t-zinc-900 dark:border-t-zinc-300 rounded-full animate-spin" />
-              <span className="text-zinc-400 dark:text-zinc-500 text-sm">加载中...</span>
+          <div className="flex items-center justify-center py-32">
+            <div className="flex flex-col items-center gap-4 animate-fade-in">
+              <div className="relative">
+                <div className="w-8 h-8 border-2 border-slate-200 dark:border-slate-700 border-t-blue-500 rounded-full animate-spin" />
+              </div>
+              <span className="text-sm text-slate-400 dark:text-slate-500">加载中...</span>
             </div>
           </div>
         ) : valuations.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-24 gap-3">
-            <div className="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
-              <span className="text-zinc-300 dark:text-zinc-600 text-xl">$</span>
+          <div className="flex flex-col items-center justify-center py-32 gap-5 animate-fade-in">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border border-blue-100 dark:border-blue-900/30 flex items-center justify-center">
+              <span className="text-blue-400 dark:text-blue-500 text-2xl font-light">¥</span>
             </div>
-            <span className="text-zinc-400 dark:text-zinc-500 text-sm">暂无基金数据</span>
-            <p className="text-xs text-zinc-300 dark:text-zinc-600">
-              点击编辑按钮添加基金
-            </p>
+            <div className="text-center">
+              <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">暂无基金数据</p>
+              <p className="text-xs text-slate-400 dark:text-slate-500 mt-1.5">
+                点击编辑按钮添加基金
+              </p>
+            </div>
           </div>
         ) : (
-          <div className="flex flex-col lg:flex-row gap-3 sm:gap-4">
-            <div className="lg:w-[380px] shrink-0 space-y-3 sm:space-y-4">
+          <div className="flex flex-col lg:flex-row gap-5">
+            <div className="lg:w-[400px] shrink-0 space-y-5">
               <IndexBar isEdit={isEdit} />
               <GainsBar />
             </div>
             <div className="flex-1 min-w-0">
-              <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
-                <div className="px-4 py-2.5 border-b border-zinc-100 dark:border-zinc-800 flex items-center justify-between flex-wrap gap-2">
-                  <h2 className="text-[0.75rem] sm:text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-                    基金持仓 ({valuations.length})
+              <div className="card overflow-hidden">
+                <div className="card-header flex items-center justify-between flex-wrap gap-3">
+                  <h2>
+                    基金持仓
+                    <span className="ml-2 text-slate-400 dark:text-slate-500 font-normal text-xs">
+                      {valuations.length}
+                    </span>
                   </h2>
                   <ControlBar
                     isEdit={isEdit}
@@ -137,7 +144,7 @@ export default function HomePage() {
                     onRefresh={refresh}
                   />
                 </div>
-                <div className="p-2 sm:p-4">
+                <div className="p-0 sm:p-4">
                   <FundTable isEdit={isEdit} onRefresh={refresh} />
                 </div>
               </div>

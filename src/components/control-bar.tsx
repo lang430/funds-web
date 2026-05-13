@@ -20,40 +20,23 @@ export function ControlBar({
   onRefresh,
 }: Props) {
   return (
-    <div className="flex items-center gap-1">
-        {isDuringDate && (
-          <button
-            onClick={onToggleLiveUpdate}
-            className={`inline-flex items-center gap-1 text-[0.65rem] px-2 py-1 rounded-md border transition-colors ${
-              isLiveUpdate
-                ? "border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/30"
-                : "border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
-            }`}
-          >
-            {isLiveUpdate ? <Pause size={11} /> : <Play size={11} />}
-            {isLiveUpdate ? "暂停" : "实时更新"}
-          </button>
-        )}
-
-        <button
-          onClick={onToggleEdit}
-          className={`inline-flex items-center gap-1 text-[0.65rem] px-2 py-1 rounded-md border transition-colors ${
-            isEdit
-              ? "border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/30"
-              : "border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
-          }`}
-        >
-          <Edit3 size={11} />
-          {isEdit ? "完成" : "编辑"}
+    <div className="flex items-center gap-1.5">
+      {isDuringDate && (
+        <button onClick={onToggleLiveUpdate} className={`btn ${isLiveUpdate ? "btn-active" : "btn-outline"} text-xs`}>
+          {isLiveUpdate ? <Pause size={13} /> : <Play size={13} />}
+          {isLiveUpdate ? "暂停" : "实时更新"}
         </button>
+      )}
 
-        <button
-          onClick={onRefresh}
-          className="inline-flex items-center gap-1 text-[0.65rem] px-2 py-1 rounded-md border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors"
-        >
-          <RefreshCw size={11} />
-          刷新
-        </button>
-      </div>
+      <button onClick={onToggleEdit} className={`btn ${isEdit ? "btn-active" : "btn-outline"} text-xs`}>
+        <Edit3 size={13} />
+        {isEdit ? "完成" : "编辑"}
+      </button>
+
+      <button onClick={onRefresh} className="btn btn-outline text-xs">
+        <RefreshCw size={13} />
+        刷新
+      </button>
+    </div>
   );
 }

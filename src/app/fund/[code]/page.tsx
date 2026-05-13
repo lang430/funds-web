@@ -89,10 +89,10 @@ export default function FundDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
+      <div className="min-h-screen bg-slate-50 dark:bg-[#0a0a0b]">
         <NavBar />
-        <div className="flex items-center justify-center py-20">
-          <Loader2 className="w-5 h-5 animate-spin text-zinc-400" />
+        <div className="flex items-center justify-center py-32">
+          <Loader2 className="w-5 h-5 animate-spin text-slate-400" />
         </div>
       </div>
     );
@@ -100,13 +100,13 @@ export default function FundDetailPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
+      <div className="min-h-screen bg-slate-50 dark:bg-[#0a0a0b]">
         <NavBar />
-        <div className="flex flex-col items-center justify-center py-20 gap-4">
-          <p className="text-sm text-zinc-500">{error}</p>
+        <div className="flex flex-col items-center justify-center py-32 gap-4 animate-fade-in">
+          <p className="text-sm text-slate-500">{error}</p>
           <button
             onClick={() => router.back()}
-            className="px-4 py-1.5 text-xs rounded-md bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-700"
+            className="btn btn-outline text-xs"
           >
             返回
           </button>
@@ -116,14 +116,14 @@ export default function FundDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0a0a0b] text-slate-800 dark:text-slate-200">
       <NavBar />
-      <div className="mx-auto max-w-[900px] px-3 sm:px-5 py-4 space-y-4">
+      <div className="mx-auto max-w-[960px] px-4 sm:px-6 py-6 space-y-5">
         <button
           onClick={() => router.back()}
-          className="inline-flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors"
+          className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-colors"
         >
-          <ArrowLeft className="w-3.5 h-3.5" />
+          <ArrowLeft className="w-4 h-4" />
           返回
         </button>
 

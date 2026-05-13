@@ -12,9 +12,9 @@ interface Props {
 type SortDir = "none" | "asc" | "desc";
 
 function getSortIcon(dir: SortDir) {
-  if (dir === "asc") return <ArrowUp className="w-3 h-3" />;
-  if (dir === "desc") return <ArrowDown className="w-3 h-3" />;
-  return <ArrowUpDown className="w-3 h-3" />;
+  if (dir === "asc") return <ArrowUp className="w-3.5 h-3.5" />;
+  if (dir === "desc") return <ArrowDown className="w-3.5 h-3.5" />;
+  return <ArrowUpDown className="w-3.5 h-3.5" />;
 }
 
 export function PositionTable({ data }: Props) {
@@ -35,30 +35,25 @@ export function PositionTable({ data }: Props) {
 
   if (data.length === 0) {
     return (
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4">
-        <p className="text-[0.7rem] sm:text-xs text-zinc-400 text-center py-4">暂无持仓数据</p>
+      <div className="card p-5">
+        <p className="text-sm text-slate-400 dark:text-slate-500 text-center py-6">暂无持仓数据</p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
-      <div className="px-4 py-2.5 border-b border-zinc-100 dark:border-zinc-800">
-        <h2 className="text-[0.75rem] sm:text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-          持仓明细
-        </h2>
+    <div className="card overflow-hidden">
+      <div className="card-header">
+        <h2>持仓明细</h2>
       </div>
-      <div className="max-h-80 overflow-y-auto">
-        <table className="w-full text-[0.7rem] sm:text-xs">
-          <thead className="sticky top-0 bg-zinc-50 dark:bg-zinc-800/50">
-            <tr className="text-zinc-500 dark:text-zinc-400">
-              <th className="px-4 py-2 text-left font-medium w-24">股票代码</th>
-              <th className="px-4 py-2 text-left font-medium">股票名称</th>
-              <th
-                className="px-4 py-2 text-right font-medium cursor-pointer select-none hover:text-zinc-700 dark:hover:text-zinc-200"
-                onClick={toggleSort}
-              >
-                <span className="inline-flex items-center gap-1">
+      <div className="max-h-96 overflow-y-auto">
+        <table className="table-base">
+          <thead className="sticky top-0 bg-white dark:bg-[#111113] z-10">
+            <tr>
+              <th className="!w-32">股票代码</th>
+              <th>股票名称</th>
+              <th className="!text-right cursor-pointer select-none hover:text-slate-600 dark:hover:text-slate-300" onClick={toggleSort}>
+                <span className="inline-flex items-center gap-1.5">
                   占比
                   {getSortIcon(sortDir)}
                 </span>
@@ -69,17 +64,14 @@ export function PositionTable({ data }: Props) {
             {sorted.map((item, i) => {
               const pct = parseFloat(item.JZBL);
               return (
-                <tr
-                  key={`${item.GPDM}-${i}`}
-                  className="border-t border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/30"
-                >
-                  <td className="px-4 py-2 font-mono text-zinc-600 dark:text-zinc-400">
+                <tr key={`${item.GPDM}-${i}`} className="table-row-hover">
+                  <td className="!font-mono text-slate-500 dark:text-slate-400">
                     {item.GPDM}
                   </td>
-                  <td className="px-4 py-2 text-zinc-800 dark:text-zinc-200">
+                  <td className="text-slate-800 dark:text-slate-200">
                     {item.GPJC}
                   </td>
-                  <td className="px-4 py-2 text-right font-mono text-zinc-800 dark:text-zinc-200">
+                  <td className="!text-right font-mono text-slate-700 dark:text-slate-200 font-medium tnum">
                     {isNaN(pct) ? "--" : `${pct.toFixed(2)}%`}
                   </td>
                 </tr>

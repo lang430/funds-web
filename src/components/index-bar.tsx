@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useIndicesStore, DEFAULT_INDICES } from "@/stores/indices-store";
-import { Plus, X, Star } from "lucide-react";
+import { Plus, X, Star, TrendingUp, TrendingDown } from "lucide-react";
 import type { IndexDiff } from "@/lib/api/types";
 
 interface Props {
@@ -73,14 +73,12 @@ export function IndexBar({ isEdit }: Props) {
   );
 
   return (
-    <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
-      <div className="px-4 py-2.5 border-b border-zinc-100 dark:border-zinc-800">
-        <h2 className="text-[0.75rem] sm:text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-          市场行情
-        </h2>
+    <div className="card overflow-hidden">
+      <div className="card-header">
+        <h2>市场行情</h2>
       </div>
-      <div className="p-3 sm:p-4">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+      <div className="p-4 sm:p-5">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {indexData && indexData.length > 0 && indexData.map((item, i) => {
             const code = selectedCodes[i];
             if (!code) return null;
@@ -94,16 +92,16 @@ export function IndexBar({ isEdit }: Props) {
             return (
               <div
                 key={code}
-                className={`relative rounded-lg border p-2.5 sm:p-3 ${
+                className={`relative rounded-lg border p-3 transition-all duration-200 ${
                   isFocused
-                    ? "ring-1 ring-primary border-primary/30 bg-primary/[0.02]"
-                    : "border-zinc-100 dark:border-zinc-800 hover:border-zinc-200 dark:hover:border-zinc-700"
+                    ? "ring-1 ring-blue-400/50 border-blue-200 dark:border-blue-800 bg-blue-50/40 dark:bg-blue-950/20"
+                    : "border-slate-100 dark:border-white/5 hover:border-slate-200 dark:hover:border-white/10 hover:shadow-sm"
                 }`}
               >
                 {isEdit && (
                   <button
                     onClick={() => removeIndex(i)}
-                    className="absolute -top-1.5 -right-1.5 w-4 h-4 flex items-center justify-center rounded-full bg-red-500 text-white hover:bg-red-600 z-10"
+                    className="absolute -top-2 -right-2 w-4 h-4 flex items-center justify-center rounded-full bg-red-500 text-white hover:bg-red-600 z-10 shadow-sm"
                     title="移除"
                   >
                     <X size={10} />
@@ -112,25 +110,32 @@ export function IndexBar({ isEdit }: Props) {
                 {isEdit && (
                   <button
                     onClick={() => setFocusedIndex(isFocused ? null : code)}
-                    className={`absolute -top-1.5 left-0 w-4 h-4 flex items-center justify-center ${
-                      isFocused ? "text-yellow-400" : "text-zinc-300"
-                    } hover:text-yellow-400 z-10`}
+                    className={`absolute -top-2 left-1 w-4 h-4 flex items-center justify-center ${
+                      isFocused ? "text-amber-400" : "text-slate-300 dark:text-slate-600"
+                    } hover:text-amber-400 z-10`}
                     title="关注"
                   >
                     <Star size={10} />
                   </button>
                 )}
-                <p className="text-[0.6rem] sm:text-[0.65rem] text-zinc-400 dark:text-zinc-500 truncate mb-1">
-                  {label}
-                </p>
-                <p className={`text-xs sm:text-sm font-bold font-mono ${colorClass}`}>
+                <div className="flex items-center gap-1.5 mb-2">
+                  <span className="text-[0.7rem] text-slate-500 dark:text-slate-400 truncate">
+                    {label}
+                  </span>
+                  {isUp ? (
+                    <TrendingUp size={12} className="text-red-400 shrink-0" />
+                  ) : (
+                    <TrendingDown size={12} className="text-green-400 shrink-0" />
+                  )}
+                </div>
+                <p className={`text-sm font-bold font-mono mb-1 ${colorClass}`}>
                   {item.f2}
                 </p>
-                <div className="flex items-center gap-1.5 mt-0.5">
-                  <span className={`text-[0.6rem] sm:text-[0.65rem] font-mono ${colorClass}`}>
+                <div className="flex items-center gap-2">
+                  <span className={`text-[0.7rem] font-mono font-medium ${colorClass}`}>
                     {formatChange(change)}
                   </span>
-                  <span className={`text-[0.6rem] sm:text-[0.65rem] font-mono ${colorClass}`}>
+                  <span className={`text-[0.7rem] font-mono font-medium ${colorClass}`}>
                     {formatChangePercent(changePercent)}
                   </span>
                 </div>
@@ -138,16 +143,16 @@ export function IndexBar({ isEdit }: Props) {
             );
           })}
           {isEdit && selectedCodes.length < 4 && (
-            <div className="relative flex items-center justify-center rounded-lg border border-dashed border-zinc-300 dark:border-zinc-600 min-h-[80px]" ref={selectRef}>
+            <div className="relative flex items-center justify-center rounded-lg border border-dashed border-slate-200 dark:border-slate-700 min-h-[96px] bg-slate-50/50 dark:bg-transparent" ref={selectRef}>
               <button
                 onClick={() => setShowSelect(!showSelect)}
-                className="flex items-center gap-1 text-[0.65rem] text-zinc-400 hover:text-primary transition-colors"
+                className="flex items-center gap-1.5 text-[0.7rem] text-slate-400 hover:text-blue-500 transition-colors"
               >
                 <Plus size={14} />
                 添加指数
               </button>
               {showSelect && availableIndices.length > 0 && (
-                <div className="absolute top-full left-0 mt-1 z-50 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg shadow-lg max-h-44 overflow-y-auto min-w-[140px]">
+                <div className="absolute top-full left-0 mt-1.5 z-50 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg shadow-slate-200/50 dark:shadow-black/20 max-h-48 overflow-y-auto min-w-[150px] py-1">
                   {availableIndices.map((item) => (
                     <button
                       key={item.value}
@@ -155,7 +160,7 @@ export function IndexBar({ isEdit }: Props) {
                         addIndex(item.value);
                         setShowSelect(false);
                       }}
-                      className="block w-full text-left px-3 py-1.5 text-[0.65rem] hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300"
+                      className="block w-full text-left px-3.5 py-2 text-[0.75rem] hover:bg-slate-50 dark:hover:bg-white/5 text-slate-700 dark:text-slate-300 transition-colors"
                     >
                       {item.label}
                     </button>

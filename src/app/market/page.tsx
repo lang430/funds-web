@@ -35,17 +35,17 @@ export default function MarketPage() {
   }, []);
 
   return (
-    <div className={`min-h-screen bg-zinc-50 dark:bg-zinc-950 ${darkMode ? "dark" : ""}`}>
+    <div className={`min-h-screen bg-slate-50 dark:bg-[#0a0a0b] ${darkMode ? "dark" : ""}`}>
       <NavBar />
-      <main className="w-full px-3 sm:px-5 py-3 sm:py-4">
+      <main className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6">
         {loading ? (
-          <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-5 h-5 animate-spin text-zinc-400" />
-            <span className="ml-2 text-xs text-zinc-400">加载中...</span>
+          <div className="flex items-center justify-center py-32 gap-2 animate-fade-in">
+            <Loader2 className="w-5 h-5 animate-spin text-slate-400" />
+            <span className="text-sm text-slate-400">加载中...</span>
           </div>
         ) : error ? (
-          <div className="flex items-center justify-center py-20">
-            <p className="text-xs text-red-500">{error}</p>
+          <div className="flex items-center justify-center py-32">
+            <p className="text-sm text-red-500">{error}</p>
           </div>
         ) : data ? (
           <MarketCenter darkMode={darkMode} data={data} />

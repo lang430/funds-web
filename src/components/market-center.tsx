@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { cn } from "@/lib/utils";
 import type { MarketResponse } from "@/lib/api/types";
 
 const TABS = [
@@ -31,22 +30,21 @@ function FlowRow({ name, up, down }: FlowRowProps) {
   const isPositive = net >= 0;
 
   return (
-    <div className="flex items-center justify-between px-3 py-2 border-b border-zinc-100 dark:border-zinc-800 last:border-0">
-      <span className="text-[0.7rem] sm:text-xs text-zinc-700 dark:text-zinc-300 truncate flex-1 mr-2">
+    <div className="flex items-center justify-between px-4 py-3 border-b border-slate-50 dark:border-white/[0.03] last:border-0 hover:bg-slate-50/50 dark:hover:bg-white/[0.02] transition-colors">
+      <span className="text-sm text-slate-700 dark:text-slate-300 truncate flex-1 mr-4">
         {name}
       </span>
-      <div className="flex items-center gap-3 text-[0.7rem] sm:text-xs shrink-0">
-        <span className="text-red-500 w-16 text-right tabular-nums">
+      <div className="flex items-center gap-4 text-sm shrink-0">
+        <span className="text-red-500 w-18 text-right tabular-nums">
           {formatFlow(up)}
         </span>
-        <span className="text-green-500 w-16 text-right tabular-nums">
+        <span className="text-green-500 w-18 text-right tabular-nums">
           {formatFlow(down)}
         </span>
         <span
-          className={cn(
-            "w-14 text-right tabular-nums font-medium",
+          className={`w-16 text-right tabular-nums font-medium ${
             isPositive ? "text-red-500" : "text-green-500"
-          )}
+          }`}
         >
           {isPositive ? "+" : ""}
           {formatFlow(net)}
@@ -57,7 +55,7 @@ function FlowRow({ name, up, down }: FlowRowProps) {
 }
 
 interface MarketCenterProps {
-  darkMode: boolean;
+  darkMode?: boolean;
   data: MarketResponse;
 }
 
@@ -67,41 +65,40 @@ export function MarketCenter({ data }: MarketCenterProps) {
   const currentData = data[activeTab] ?? [];
 
   return (
-    <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
-      <div className="flex border-b border-zinc-200 dark:border-zinc-800">
+    <div className="card overflow-hidden">
+      <div className="flex border-b border-slate-200 dark:border-white/5">
         {TABS.map((tab) => (
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={cn(
-              "flex-1 py-2.5 text-[0.7rem] sm:text-xs font-medium transition-colors relative",
+            className={`flex-1 py-3 text-sm font-medium transition-all duration-150 relative ${
               activeTab === tab.key
-                ? "text-red-500"
-                : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300"
-            )}
+                ? "text-blue-600 dark:text-blue-400"
+                : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
+            }`}
           >
             {tab.label}
             {activeTab === tab.key && (
-              <span className="absolute bottom-0 left-1/4 right-1/4 h-0.5 bg-red-500 rounded-full" />
+              <span className="absolute bottom-0 left-1/3 right-1/3 h-0.5 bg-blue-500 rounded-full" />
             )}
           </button>
         ))}
       </div>
 
-      <div className="flex items-center justify-between px-3 py-2 bg-zinc-50 dark:bg-zinc-950 border-b border-zinc-100 dark:border-zinc-800">
-        <span className="text-[0.6rem] sm:text-[10px] text-zinc-400 dark:text-zinc-500 w-1/3">
+      <div className="flex items-center justify-between px-4 py-2.5 bg-slate-50/80 dark:bg-white/[0.02] border-b border-slate-100 dark:border-white/5">
+        <span className="text-xs text-slate-400 dark:text-slate-500 w-1/3">
           名称
         </span>
-        <div className="flex items-center gap-3 text-[0.6rem] sm:text-[10px] text-zinc-400 dark:text-zinc-500">
-          <span className="w-16 text-right">流入</span>
-          <span className="w-16 text-right">流出</span>
-          <span className="w-14 text-right">净额</span>
+        <div className="flex items-center gap-4 text-xs text-slate-400 dark:text-slate-500">
+          <span className="w-18 text-right">流入</span>
+          <span className="w-18 text-right">流出</span>
+          <span className="w-16 text-right">净额</span>
         </div>
       </div>
 
-      <div className="max-h-[60vh] overflow-y-auto">
+      <div className="max-h-[65vh] overflow-y-auto">
         {currentData.length === 0 ? (
-          <div className="py-12 text-center text-[0.7rem] sm:text-xs text-zinc-400">
+          <div className="py-16 text-center text-sm text-slate-400 dark:text-slate-500">
             暂无数据
           </div>
         ) : (

@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { Turnstile } from "@marsidev/react-turnstile";
-import { Loader2, AlertCircle, RefreshCw } from "lucide-react";
+import { Loader2, AlertCircle, RefreshCw, BarChart3 } from "lucide-react";
 
 const TURNSTILE_LOAD_TIMEOUT = 10000;
 
@@ -63,43 +63,43 @@ export function LoginPage() {
   const canLogin = siteKey ? !!turnstileToken : true;
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-zinc-50 dark:bg-zinc-950 px-4">
-      <div className="w-full max-w-sm">
-        <div className="bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-zinc-200 dark:border-zinc-800 overflow-hidden">
-          <div className="px-6 pt-8 pb-6 text-center">
-            <div className="mb-5">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-zinc-900 dark:bg-zinc-100 mb-4">
-                <span className="text-white dark:text-zinc-900 text-lg font-bold">$</span>
+    <div className="flex items-center justify-center min-h-screen bg-slate-50 dark:bg-[#0a0a0b] px-4">
+      <div className="w-full max-w-sm animate-fade-in">
+        <div className="card overflow-hidden">
+          <div className="px-8 pt-10 pb-8 text-center">
+            <div className="mb-6">
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-500/20 mb-5">
+                <BarChart3 size={26} className="text-white" strokeWidth={2.5} />
               </div>
-              <h1 className="text-lg sm:text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
+              <h1 className="text-xl font-bold tracking-tight text-slate-800 dark:text-slate-100">
                 自选基金助手
               </h1>
-              <p className="mt-1.5 text-[0.8rem] text-zinc-400 dark:text-zinc-500">
+              <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
                 实时追踪你的基金组合
               </p>
             </div>
 
-            <div className="flex flex-col items-center gap-3">
+            <div className="flex flex-col items-center gap-4">
               {siteKey && (
                 <div className="flex flex-col items-center gap-3 w-full">
                   <div className="turnstile-container">
                     {turnstileLoading && (
-                      <div className="flex items-center gap-2 text-zinc-400">
+                      <div className="flex items-center gap-2 text-slate-400">
                         <Loader2 size={14} className="animate-spin" />
-                        <span className="text-[0.75rem]">安全验证加载中...</span>
+                        <span className="text-sm">安全验证加载中...</span>
                       </div>
                     )}
                     {turnstileError && (
                       <div className="flex flex-col items-center gap-2">
                         <div className="flex items-center gap-1.5 text-amber-500">
                           <AlertCircle size={14} />
-                          <span className="text-[0.75rem]">验证组件加载失败</span>
+                          <span className="text-sm">验证组件加载失败</span>
                         </div>
                         <button
                           onClick={handleRetry}
-                          className="inline-flex items-center gap-1 text-[0.7rem] px-3 py-1 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+                          className="btn btn-outline text-xs"
                         >
-                          <RefreshCw size={11} />
+                          <RefreshCw size={12} />
                           重试
                         </button>
                       </div>
@@ -121,15 +121,15 @@ export function LoginPage() {
               <button
                 onClick={handleLogin}
                 disabled={!canLogin || verifying}
-                className={`inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-lg text-sm font-medium transition-all ${
+                className={`inline-flex items-center justify-center gap-2.5 w-full py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                   canLogin && !verifying
-                    ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100 active:scale-[0.98]"
-                    : "bg-zinc-100 text-zinc-400 dark:bg-zinc-800 dark:text-zinc-500 cursor-not-allowed"
+                    ? "bg-slate-800 text-white dark:bg-white dark:text-slate-900 hover:bg-slate-700 dark:hover:bg-slate-100 active:scale-[0.98] shadow-sm"
+                    : "bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500 cursor-not-allowed"
                 }`}
               >
                 {verifying ? (
                   <>
-                    <Loader2 size={14} className="animate-spin" />
+                    <Loader2 size={15} className="animate-spin" />
                     验证中...
                   </>
                 ) : (
@@ -144,8 +144,8 @@ export function LoginPage() {
             </div>
           </div>
 
-          <div className="px-6 py-3 bg-zinc-50 dark:bg-zinc-900/50 border-t border-zinc-100 dark:border-zinc-800">
-            <p className="text-[0.7rem] text-center text-zinc-400 dark:text-zinc-600">
+          <div className="px-8 py-3 bg-slate-50/80 dark:bg-slate-950/50 border-t border-slate-200/60 dark:border-white/5">
+            <p className="text-xs text-center text-slate-400 dark:text-slate-500">
               登录即表示同意数据将安全存储于云端
             </p>
           </div>

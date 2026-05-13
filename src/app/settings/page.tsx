@@ -8,9 +8,9 @@ export default function SettingsPage() {
   const darkMode = useSettingsStore((s) => s.darkMode);
 
   return (
-    <div className={`min-h-screen bg-zinc-50 dark:bg-zinc-950 ${darkMode ? "dark" : ""}`}>
+    <div className={`min-h-screen bg-slate-50 dark:bg-[#0a0a0b] ${darkMode ? "dark" : ""}`}>
       <NavBar />
-      <main className="w-full px-3 sm:px-5 py-3 sm:py-4 max-w-[800px] mx-auto">
+      <main className="max-w-[640px] mx-auto px-4 sm:px-6 py-5 sm:py-6">
         <SettingsPanel />
       </main>
     </div>
